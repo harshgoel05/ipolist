@@ -1,76 +1,57 @@
 /* eslint-disable @next/next/no-img-element */
-import Navbar from "./components/Navbar";
-import Table from "./components/Table";
+import Navbar from "../components/Navbar";
+import Table from "../components/Table";
 
 export default function Home() {
   return (
-    <div>
+    <div className="bg-[#202020] min-h-screen text-white">
       <Navbar />
+      <div className="p-6">
+        <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+        
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          {[
+            { title: 'Upcoming IPOs', value: 12, desc: 'Apply before 05:00 PM IST' },
+            { title: 'Ongoing IPOs', value: 8, desc: 'Apply before 05:00 PM IST' },
+            { title: 'IPOs Closing Today', value: 3, desc: 'Apply before 05:00 PM IST' },
+            { title: 'Closed IPOs', value: 15, desc: 'No more accepting applications' }
+          ].map((item, index) => (
+            <div key={index} className="bg-[#2A2A2A] rounded-lg p-4">
+              <h3 className="text-sm font-medium text-gray-400 uppercase">{item.title}</h3>
+              <p className="text-3xl font-semibold mt-2">{item.value}</p>
+              <p className="text-sm text-gray-400 mt-1">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+{/* 
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          <div className="lg:col-span-2 bg-[#2A2A2A] rounded-lg p-4">
+            <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
+            <ul className="space-y-3">
+              {[
+                'New IPO announced: Tech Innovators Ltd',
+                'Subscription for GreenEnergy IPO closed',
+                'AlliedHealth IPO oversubscribed by 3.2x',
+                'Refunds initiated for UnderSubbed Corp IPO'
+              ].map((activity, index) => (
+                <li key={index} className="bg-[#333] rounded p-3 text-sm">{activity}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="bg-[#2A2A2A] rounded-lg p-4">
+            <h2 className="text-xl font-semibold mb-4">Upcoming Obligations</h2>
+            <div className="bg-[#3A3A3A] rounded-lg p-4">
+              <h3 className="font-semibold">VAT declaration</h3>
+              <p className="text-sm text-gray-400 mt-1">You have 27 days left to submit the documentation</p>
+            </div>
+          </div>
+        </div> */}
 
-      <div className="m-4 flex gap-[2%] flex-wrap items-center justify-center">
-        <div className="border border-gray-600 rounded-lg min-w-[48%] md:min-w-[23%] basis-0 shadow shadow-zinc-700">
-          <div className="px-4 py-5 sm:p-6">
-            <dl>
-              <dt className="text-sm font-medium leading-5 text-gray-500 truncate uppercase">
-                Upcoming IPOs
-              </dt>
-              <dd className="mt-1 text-3xl font-semibold leading-9 text-white">
-                12
-              </dd>
-              <dd className="font-light text-sm text-gray-400">
-                <span>Apply to this before 05.00 PM IST</span>
-              </dd>
-            </dl>
-          </div>
-        </div>
-        <div className="border border-gray-600 rounded-lg min-w-[48%] md:min-w-[23%] basis-0 shadow shadow-zinc-700">
-          <div className="px-4 py-5 sm:p-6">
-            <dl>
-              <dt className="text-sm font-medium leading-5 text-gray-500 truncate uppercase">
-                On Going IPos
-              </dt>
-              <dd className="mt-1 text-3xl font-semibold leading-9 text-white">
-                12
-              </dd>
-              <dd className="font-light text-sm text-gray-400">
-                <span>Apply to this before 05.00 PM IST</span>
-              </dd>
-            </dl>
-          </div>
-        </div>
-        <div className="border border-gray-600 rounded-lg min-w-[48%] md:min-w-[23%] basis-0 shadow shadow-zinc-700">
-          <div className="px-4 py-5 sm:p-6">
-            <dl>
-              <dt className="text-sm font-medium leading-5 text-gray-500 truncate uppercase">
-                IPOs Closing Today
-              </dt>
-              <dd className="mt-1 text-3xl font-semibold leading-9 text-white">
-                12
-              </dd>
-              <dd className="font-light text-sm text-gray-400">
-                <span>Apply to this before 05.00 PM IST</span>
-              </dd>
-            </dl>
-          </div>
-        </div>
-        <div className="border border-gray-600 rounded-lg min-w-[48%] md:min-w-[23%] basis-0 shadow shadow-zinc-700">
-          <div className="px-4 py-5 sm:p-6">
-            <dl>
-              <dt className="text-sm font-medium leading-5 text-gray-500 truncate uppercase">
-                Closed IPOs
-              </dt>
-              <dd className="mt-1 text-3xl font-semibold leading-9 text-white">
-                12
-              </dd>
-              <dd className="font-light text-sm text-gray-400">
-                <span>No more accepting application</span>
-              </dd>
-            </dl>
-          </div>
+        <div className="mt-6">
+          <h2 className="text-xl font-semibold mb-4">Latest IPOs</h2>
+          <Table />
         </div>
       </div>
-
-      <Table />
     </div>
   );
 }

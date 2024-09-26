@@ -162,57 +162,99 @@ export default function Table() {
               </tr>
             </thead>
             <tbody>
-              {currentData.map((el: IPO, index) => (
-                <tr className="border-b dark:border-gray-700" key={index}>
-                  <td
-                    scope="row"
-                    className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white truncate max-w-56"
-                  >
-                    {el.name}
-                  </td>
-                  <td className="px-4 py-3 truncate max-w-36 ">
-                    {convertDateTimeToDateFormatter(el.startDate)} -{" "}
-                    {convertDateTimeToDateFormatter(el.endDate)}
-                  </td>
-                  <td className="px-4 py-3 truncate max-w-36">
-                    {convertDateTimeToDateFormatter(el.listingDate)}
-                  </td>
-                  <td className="px-4 py-3 truncate max-w-36">
-                    {el.priceRange.min} - {el.priceRange.max}
-                  </td>
-                  <td className="px-4 py-3 truncate max-w-36">
-                    {el.sizePerLot} Shares
-                  </td>
-                  <td className="px-4 py-3 truncate max-w-36">
-                    {calculateStatusAccordingToDate(
-                      el.startDate,
-                      el.endDate,
-                      el.listingDate
-                    )}
-                  </td>
-                  <td className="px-4 py-3 truncate max-w-36">
-                    {el.priceRange.min * el.sizePerLot}
-                  </td>
-                  <td className="px-4 py-3 truncate max-w-36">₹3810.34 Cr</td>
-                  <td className="px-4 py-3 truncate max-w-36">
-                    ₹{el.gmpDetails.latestGmpPrice} (
-                    {Math.round(
-                      ((el.gmpDetails.latestGmpPrice + el.priceRange.max) *
-                        100) /
-                        el.priceRange.max
-                    )}
-                    %)
-                  </td>
-                  <td className="px-4 py-3 truncate max-w-36">Cs.</td>
-                  <td className="px-4 py-3 truncate max-w-36">
-                    {el.applyRecommendation == null
-                      ? "N/A"
-                      : el.applyRecommendation == true
-                      ? "Yes"
-                      : "No"}
-                  </td>
-                </tr>
-              ))}
+              {currentData.map((el: IPO, index) => {
+                const status = calculateStatusAccordingToDate(
+                  el.startDate,
+                  el.endDate,
+                  el.listingDate
+                );
+                return (
+                  <tr className="border-b dark:border-gray-700" key={index}>
+                    <td
+                      scope="row"
+                      className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white truncate max-w-56"
+                    >
+                      {el.name}
+                    </td>
+                    <td className="px-4 py-3 truncate max-w-36 ">
+                      <p
+                        className={
+                          new Date(el.startDate).getDate() ===
+                          new Date().getDate()
+                            ? "text-green-500"
+                            : ""
+                        }
+                      >
+                        {convertDateTimeToDateFormatter(el.startDate)} -{" "}
+                      </p>
+                      <p
+                        className={
+                          new Date(el.endDate).getDate() ===
+                          new Date().getDate()
+                            ? "text-red-500"
+                            : ""
+                        }
+                      >
+                        {convertDateTimeToDateFormatter(el.endDate)}
+                      </p>
+                    </td>
+                    <td className="px-4 py-3 truncate max-w-36">
+                      {convertDateTimeToDateFormatter(el.listingDate)}
+                    </td>
+                    <td className="px-4 py-3 truncate max-w-36">
+                      {el.priceRange.min} - {el.priceRange.max}
+                    </td>
+                    <td className="px-4 py-3 truncate max-w-36">
+                      {el.sizePerLot} Shares
+                    </td>
+                    <td className="px-4 py-3 truncate max-w-36">
+                      <div
+                        className={
+                          "text-black text-xs rounded-full text-center px-2 py-1 " +
+                          (status === "Open"
+                            ? "bg-green-400"
+                            : status === "Closed"
+                            ? "bg-red-400"
+                            : status === "Listed"
+                            ? "bg-blue-400"
+                            : "bg-yellow-400")
+                        }
+                      >
+                        {status}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 truncate max-w-36">
+                      {el.priceRange.min * el.sizePerLot}
+                    </td>
+                    <td className="px-4 py-3 truncate max-w-36">₹3810.34 Cr</td>
+                    <td className="px-4 py-3 truncate max-w-36 font-semibold">
+                      <p
+                        className={
+                          el.gmpDetails.latestGmpPrice > el.priceRange.max * 1.5
+                            ? "text-green-500"
+                            : ""
+                        }
+                      >
+                        ₹{el.gmpDetails.latestGmpPrice} (
+                        {Math.round(
+                          ((el.gmpDetails.latestGmpPrice + el.priceRange.max) *
+                            100) /
+                            el.priceRange.max
+                        )}
+                        %)
+                      </p>
+                    </td>
+                    <td className="px-4 py-3 truncate max-w-36">Cs.</td>
+                    <td className="px-4 py-3 truncate max-w-36">
+                      {el.applyRecommendation == null
+                        ? "N/A"
+                        : el.applyRecommendation == true
+                        ? "Yes"
+                        : "No"}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

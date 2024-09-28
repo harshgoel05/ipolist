@@ -2,7 +2,7 @@
 import Table from "@/components/Table";
 import data from "@/utils/data.json";
 import { calculateStatusAccordingToDate } from "@/utils/helpers";
-import { IPODetailed } from "@/utils/types";
+import { IPODetailed, IPOStatus } from "@/utils/types";
 export default function Home() {
   const processedData: IPODetailed[] = data
     .map((el) => {
@@ -17,6 +17,10 @@ export default function Home() {
           el.endDate,
           el.listingDate
         ),
+        latestGmp:
+          el.gmpTimeline?.reduce((prev, current) => {
+            return prev.date > current.date ? prev : current;
+          })?.price ?? null,
       };
     })
     .sort((a, b) => +new Date(b.endDate || 0) - +new Date(a.endDate || 0));
@@ -30,22 +34,32 @@ export default function Home() {
           {[
             {
               title: "Upcoming IPOs",
-              value: 12,
-              desc: "Apply before 05:00 PM IST",
+              value: processedData.filter(
+                (el) => el.status === IPOStatus.Upcoming
+              ).length,
+              desc: "Research and apply",
             },
             {
               title: "Ongoing IPOs",
-              value: 8,
-              desc: "Apply before 05:00 PM IST",
+              value: processedData.filter((el) => el.status === IPOStatus.Open)
+                .length,
+              desc: "Apply as soon as possible",
             },
             {
               title: "IPOs Closing Today",
-              value: 3,
+              value: processedData.filter(
+                (el) =>
+                  el.endDate &&
+                  new Date(el.endDate).getDate() === new Date().getDate() &&
+                  new Date(el.endDate).getMonth() === new Date().getMonth()
+              ).length,
               desc: "Apply before 05:00 PM IST",
             },
             {
               title: "Closed IPOs",
-              value: 15,
+              value: processedData.filter(
+                (el) => el.status === IPOStatus.Closed
+              ).length,
               desc: "No more accepting applications",
             },
           ].map((item, index) => (
@@ -87,7 +101,7 @@ export default function Home() {
         </div> */}
 
         <div className="mt-6">
-          <h2 className="text-xl font-semibold mb-4">Latest IPOs</h2>
+          {/* <h2 className="text-xl font-semibold mb-4">Latest IPOs</h2> */}
           <Table processedData={processedData} />
         </div>
       </div>

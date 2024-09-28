@@ -16,14 +16,14 @@ export default function Table({
     "Company Name",
     "Bidding Dates",
     "Listing Date",
+    "Status",
     "Price Range",
     "Lot Size",
-    "Stage",
     "Min. Amount",
     "Issue Size",
     "GMP",
-    "Allotment %",
-    "Recommended",
+    // "Allotment %",
+    // "Recommended",
   ];
   const limit = 10;
 
@@ -91,7 +91,7 @@ export default function Table({
               {TABLE_HEADERS.map((el: string) => (
                 <th
                   scope="col"
-                  className="px-4 py-3 truncate max-w-56"
+                  className={"px-4 py-3 truncate max-w-56 "}
                   key={el}
                 >
                   {el}
@@ -135,7 +135,7 @@ export default function Table({
                   >
                     {el.name}
                   </td>
-                  <td className="px-4 py-3 truncate max-w-36 ">
+                  <td className="flex px-4 py-3 truncate max-w-36 ">
                     {el.startDate && (
                       <p
                         className={
@@ -167,14 +167,6 @@ export default function Table({
                       : "--"}
                   </td>
                   <td className="px-4 py-3 truncate max-w-36">
-                    ₹{el.priceRange.min} - ₹{el.priceRange.max}
-                  </td>
-                  <td className="px-4 py-3 truncate max-w-36">
-                    {el.details.sizePerLot
-                      ? el.details.sizePerLot + " Shares"
-                      : "--"}
-                  </td>
-                  <td className="px-4 py-3 truncate max-w-36">
                     <div
                       className={
                         "text-black text-xs rounded-full text-center px-2 py-1 " +
@@ -191,9 +183,19 @@ export default function Table({
                     </div>
                   </td>
                   <td className="px-4 py-3 truncate max-w-36">
+                    ₹{el.priceRange.min} - ₹{el.priceRange.max}
+                  </td>
+                  <td className="px-4 py-3 truncate max-w-36">
+                    {el.details.sizePerLot
+                      ? el.details.sizePerLot + " Shares"
+                      : "--"}
+                  </td>
+                  <td className="px-4 py-3 truncate max-w-36">
                     {el.minAmount ? `₹${el.minAmount}` : "--"}
                   </td>
-                  <td className="px-4 py-3 truncate max-w-36">₹3810.34 Cr</td>
+                  <td className="px-4 py-3 truncate max-w-36">
+                    ₹{el.details.issueSize?.replace("cr", "Cr")}
+                  </td>
                   {/* <td className="px-4 py-3 truncate max-w-36 font-semibold">
                       {el.priceRange.max && el.details.sizePerLot && (
                         <p
@@ -214,7 +216,9 @@ export default function Table({
                         </p>
                       )}
                     </td> */}
-                  <td className="px-4 py-3 truncate max-w-36">Cs.</td>
+                  <td className="px-4 py-3 truncate max-w-36">
+                    {el.latestGmp ? "₹" + el.latestGmp : "--"}
+                  </td>
                   {/* <td className="px-4 py-3 truncate max-w-36">
                       {el.applyRecommendation == null
                         ? "N/A"

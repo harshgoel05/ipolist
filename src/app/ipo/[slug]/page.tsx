@@ -34,13 +34,13 @@ export default function IpoDetails({ params }: { params: { slug: string } }) {
       title: "Minimum Investment",
       value:
         ipoData.details.sizePerLot && ipoData.priceRange.max
-          ? ipoData.details.sizePerLot * ipoData.priceRange.max
+          ? formatINR(ipoData.details.sizePerLot * ipoData.priceRange.max)
           : "--",
       icon: "🔢",
     },
     {
       title: "Issue Size",
-      value: ipoData.details.issueSize,
+      value: ipoData.details.issueSize?.replace("cr", "Cr") || "--",
       icon: "📊",
     },
     {
@@ -49,6 +49,7 @@ export default function IpoDetails({ params }: { params: { slug: string } }) {
         const gmp = ipoData.gmpTimeline?.reduce((prev, current) => {
           return prev.date > current.date ? prev : current;
         })?.price;
+        if (!gmp) return "--";
         return (
           formatINR(
             // Find the element with max date in gmpTimeline
@@ -104,6 +105,11 @@ export default function IpoDetails({ params }: { params: { slug: string } }) {
           {/* Timeline Section */}
           <div className="bg-[#2A2A2A] rounded-lg p-4 flex-1 min-w-[300px] md:flex-[0_0_32%]">
             <h2 className="text-xl font-semibold mb-4">IPO Timeline</h2>
+            {ipoData.details.schedule?.length === 0 && (
+              <p className="text-gray-300 text-sm">
+                No events scheduled yet. Please check back later.
+              </p>
+            )}
             <div className="space-y-4">
               {ipoData.details.schedule?.map((event, index) => (
                 <div key={index} className="flex items-start">
@@ -112,7 +118,18 @@ export default function IpoDetails({ params }: { params: { slug: string } }) {
                   </div>
                   <div>
                     <p className="font-semibold">{event.eventTitle}</p>
-                    <p className="text-sm text-gray-400">
+                    <p
+                      className={
+                        "text-sm text-gray-400 " +
+                        (event.date && event.date < new Date().toISOString()
+                          ? "text-gray-500"
+                          : "") +
+                        (event.date &&
+                        new Date(event.date).getDate() == new Date().getDate()
+                          ? "text-green-500"
+                          : "")
+                      }
+                    >
                       {convertDateTimeToFullFormatter(event.date)}
                     </p>
                   </div>

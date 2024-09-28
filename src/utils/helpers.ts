@@ -58,7 +58,7 @@ export function formatINR(amount: number | null | undefined): string {
 export function convertDateTimeToDateFormatter(dateTime: string): string {
   const date = new Date(dateTime);
   const day = date.getDate();
-  const month = date.getMonth() + 1;
+  const month = date.getMonth();
   return `${day} ${MONTH_NAMES_SHORT[month]}`;
 }
 
@@ -69,7 +69,7 @@ export function convertDateTimeToFullFormatter(
     if (!dateTime) return "--";
     const date = new Date(dateTime);
     const day = date.getDate();
-    const month = date.getMonth() + 1;
+    const month = date.getMonth();
     const year = date.getFullYear();
     return `${day} ${MONTH_NAMES_SHORT[month]} ${year}`;
   } catch (e) {

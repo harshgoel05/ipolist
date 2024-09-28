@@ -42,6 +42,7 @@ export interface IPO {
 export interface IPODetailed extends IPO {
   minAmount: number | null;
   status: (typeof IPOStatus)[keyof typeof IPOStatus];
+  latestGmp: number | null;
 }
 
 export enum IPOStatus {

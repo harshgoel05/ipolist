@@ -21,13 +21,18 @@ export function convertDateTimeToDateFormatter(dateTime: string): string {
 }
 
 export function calculateStatusAccordingToDate(
-  startDate: string,
-  endDate: string,
-  listingDate: string
-): string {
+  startDate: string | null,
+  endDate: string | null,
+  listingDate: string | null
+): (typeof IPOStatus)[keyof typeof IPOStatus] {
+  if (!startDate || !endDate || !listingDate) {
+    return IPOStatus.Unknown;
+  }
+
   const currentDate = new Date();
   const start = new Date(startDate);
   const end = new Date(endDate);
+
   const listing = new Date(listingDate);
 
   if (currentDate > listing) {
@@ -46,4 +51,5 @@ export const IPOStatus = {
   Open: "Open",
   Closed: "Closed",
   Listed: "Listed",
+  Unknown: "Unknown",
 };

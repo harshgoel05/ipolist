@@ -177,35 +177,41 @@ export default function Table() {
                       {el.name}
                     </td>
                     <td className="px-4 py-3 truncate max-w-36 ">
-                      <p
-                        className={
-                          new Date(el.startDate).getDate() ===
-                          new Date().getDate()
-                            ? "text-green-500"
-                            : ""
-                        }
-                      >
-                        {convertDateTimeToDateFormatter(el.startDate)} -{" "}
-                      </p>
-                      <p
-                        className={
-                          new Date(el.endDate).getDate() ===
-                          new Date().getDate()
-                            ? "text-red-500"
-                            : ""
-                        }
-                      >
-                        {convertDateTimeToDateFormatter(el.endDate)}
-                      </p>
+                      {el.startDate && (
+                        <p
+                          className={
+                            new Date(el.startDate).getDate() ===
+                            new Date().getDate()
+                              ? "text-green-500"
+                              : ""
+                          }
+                        >
+                          {convertDateTimeToDateFormatter(el.startDate)} -{" "}
+                        </p>
+                      )}
+                      {el.endDate && (
+                        <p
+                          className={
+                            new Date(el.endDate).getDate() ===
+                            new Date().getDate()
+                              ? "text-red-500"
+                              : ""
+                          }
+                        >
+                          {convertDateTimeToDateFormatter(el.endDate)}
+                        </p>
+                      )}
                     </td>
                     <td className="px-4 py-3 truncate max-w-36">
-                      {convertDateTimeToDateFormatter(el.listingDate)}
+                      {el.listingDate
+                        ? convertDateTimeToDateFormatter(el.listingDate)
+                        : "--"}
                     </td>
                     <td className="px-4 py-3 truncate max-w-36">
                       {el.priceRange.min} - {el.priceRange.max}
                     </td>
                     <td className="px-4 py-3 truncate max-w-36">
-                      {el.sizePerLot} Shares
+                      {el.details.sizePerLot ?? "--"} Shares
                     </td>
                     <td className="px-4 py-3 truncate max-w-36">
                       <div
@@ -224,34 +230,39 @@ export default function Table() {
                       </div>
                     </td>
                     <td className="px-4 py-3 truncate max-w-36">
-                      {el.priceRange.min * el.sizePerLot}
+                      {el.priceRange.min && el.details.sizePerLot
+                        ? el.priceRange.min * el.details.sizePerLot
+                        : "--"}
                     </td>
                     <td className="px-4 py-3 truncate max-w-36">₹3810.34 Cr</td>
-                    <td className="px-4 py-3 truncate max-w-36 font-semibold">
-                      <p
-                        className={
-                          el.gmpDetails.latestGmpPrice > el.priceRange.max * 1.5
-                            ? "text-green-500"
-                            : ""
-                        }
-                      >
-                        ₹{el.gmpDetails.latestGmpPrice} (
-                        {Math.round(
-                          ((el.gmpDetails.latestGmpPrice + el.priceRange.max) *
-                            100) /
-                            el.priceRange.max
-                        )}
-                        %)
-                      </p>
-                    </td>
+                    {/* <td className="px-4 py-3 truncate max-w-36 font-semibold">
+                      {el.priceRange.max && el.details.sizePerLot && (
+                        <p
+                          className={
+                            el.priceRange.max > el.details.sizePerLot * 1.5
+                              ? "text-green-500"
+                              : ""
+                          }
+                        >
+                          ₹{el.gmpDetails.latestGmpPrice} (
+                          {Math.round(
+                            ((el.gmpDetails.latestGmpPrice +
+                              el.priceRange.max) *
+                              100) /
+                              el.priceRange.max
+                          )}
+                          %)
+                        </p>
+                      )}
+                    </td> */}
                     <td className="px-4 py-3 truncate max-w-36">Cs.</td>
-                    <td className="px-4 py-3 truncate max-w-36">
+                    {/* <td className="px-4 py-3 truncate max-w-36">
                       {el.applyRecommendation == null
                         ? "N/A"
                         : el.applyRecommendation == true
                         ? "Yes"
                         : "No"}
-                    </td>
+                    </td> */}
                   </tr>
                 );
               })}

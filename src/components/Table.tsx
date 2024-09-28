@@ -1,16 +1,17 @@
 "use client";
-import {
-  calculateStatusAccordingToDate,
-  convertDateTimeToDateFormatter,
-} from "@/utils/helpers";
-import { IPO } from "@/utils/types";
-import React, { useEffect } from "react";
-import data from "@/utils/data.json";
+import { convertDateTimeToDateFormatter } from "@/utils/helpers";
+import { IPODetailed } from "@/utils/types";
+import React, { useEffect, useState } from "react";
+
 import TableNav from "./TableNav";
 import TableTopHeader from "./TableTopHeader";
 import { useRouter } from "next/navigation";
 
-export default function Table() {
+export default function Table({
+  processedData,
+}: {
+  processedData: IPODetailed[];
+}) {
   const TABLE_HEADERS = [
     "Company Name",
     "Bidding Dates",
@@ -26,8 +27,14 @@ export default function Table() {
   ];
   const limit = 10;
 
-  const [currentData, setCurrentData] = React.useState<IPO[]>([]);
+  const [currentData, setCurrentData] = React.useState<IPODetailed[]>([]);
   const [search, setSearch] = React.useState<string>("");
+
+  const [filterOptions, setFilterOptions] = useState<{
+    status: string[];
+  }>({
+    status: [],
+  });
 
   const [page, setPage] = React.useState(1);
 
@@ -36,14 +43,18 @@ export default function Table() {
   useEffect(() => {
     // Filter data based on search input if it exists, otherwise use full dataset
     let filteredData = search
-      ? data.filter((el) =>
+      ? processedData.filter((el) =>
           el.name.toLowerCase().includes(search.toLowerCase())
         )
-      : data;
-    // Sort the filtered data based on the start date
-    filteredData = filteredData.sort(
-      (a, b) => +new Date(b.startDate || 0) - +new Date(a.startDate || 0)
-    );
+      : processedData;
+
+    // Filter data based on status if it exists
+    if (filterOptions.status.length > 0) {
+      const filteredStatusData = filteredData.filter((el) =>
+        filterOptions.status.includes(el.status)
+      );
+      filteredData = filteredStatusData;
+    }
 
     // Calculate total pages based on the filtered data and the limit
     const total = Math.ceil(filteredData.length / limit);
@@ -56,18 +67,23 @@ export default function Table() {
 
     // Update the current data state with the sliced data
     setCurrentData(newData);
-  }, [page, limit, search]);
+  }, [page, limit, search, filterOptions]);
 
   useEffect(() => {
     // Reset page to 1 when search term changes
     setPage(1);
-  }, [search]);
+  }, [search, filterOptions]);
 
   const router = useRouter();
 
   return (
     <div className="border border-gray-700 relative shadow-md sm:rounded-lg w-full">
-      <TableTopHeader search={search} setSearch={setSearch} />
+      <TableTopHeader
+        search={search}
+        setSearch={setSearch}
+        filterOptions={filterOptions}
+        setFilterOptions={setFilterOptions}
+      />
       <div className="overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -84,12 +100,7 @@ export default function Table() {
             </tr>
           </thead>
           <tbody>
-            {currentData.map((el: IPO, index) => {
-              const status = calculateStatusAccordingToDate(
-                el.startDate,
-                el.endDate,
-                el.listingDate
-              );
+            {currentData.map((el: IPODetailed, index) => {
               return (
                 <tr
                   className="border-b dark:border-gray-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -136,31 +147,31 @@ export default function Table() {
                       : "--"}
                   </td>
                   <td className="px-4 py-3 truncate max-w-36">
-                    {el.priceRange.min} - {el.priceRange.max}
+                    ₹{el.priceRange.min} - ₹{el.priceRange.max}
                   </td>
                   <td className="px-4 py-3 truncate max-w-36">
-                    {el.details.sizePerLot ?? "--"} Shares
+                    {el.details.sizePerLot
+                      ? el.details.sizePerLot + " Shares"
+                      : "--"}
                   </td>
                   <td className="px-4 py-3 truncate max-w-36">
                     <div
                       className={
                         "text-black text-xs rounded-full text-center px-2 py-1 " +
-                        (status === "Open"
+                        (el.status === "Open"
                           ? "bg-green-400"
-                          : status === "Closed"
+                          : el.status === "Closed"
                           ? "bg-red-400"
-                          : status === "Listed"
+                          : el.status === "Listed"
                           ? "bg-blue-400"
                           : "bg-yellow-400")
                       }
                     >
-                      {status}
+                      {el.status}
                     </div>
                   </td>
                   <td className="px-4 py-3 truncate max-w-36">
-                    {el.priceRange.min && el.details.sizePerLot
-                      ? el.priceRange.min * el.details.sizePerLot
-                      : "--"}
+                    {el.minAmount ? `₹${el.minAmount}` : "--"}
                   </td>
                   <td className="px-4 py-3 truncate max-w-36">₹3810.34 Cr</td>
                   {/* <td className="px-4 py-3 truncate max-w-36 font-semibold">
@@ -205,11 +216,13 @@ export default function Table() {
           Showing
           <span className="font-semibold text-gray-900 dark:text-white">
             {(page - 1) * limit + 1} -
-            {page * limit >= data.length ? data.length : page * limit}
+            {currentData.length == limit
+              ? page * limit
+              : (page - 1) * limit + currentData.length}
           </span>
           of
           <span className="font-semibold text-gray-900 dark:text-white">
-            {data.length}
+            {processedData.length}
           </span>
         </span>
         <TableNav page={page} setPage={setPage} totalPages={totalPages} />

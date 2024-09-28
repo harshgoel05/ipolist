@@ -1,3 +1,5 @@
+import { IPOStatus } from "./types";
+
 export const MONTH_NAMES_SHORT = [
   "Jan",
   "Feb",
@@ -101,11 +103,3 @@ export function calculateStatusAccordingToDate(
     return IPOStatus.Closed;
   }
 }
-
-export const IPOStatus = {
-  Upcoming: "Upcoming",
-  Open: "Open",
-  Closed: "Closed",
-  Listed: "Listed",
-  Unknown: "Unknown",
-};

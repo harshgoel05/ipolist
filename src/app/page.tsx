@@ -1,7 +1,26 @@
 /* eslint-disable @next/next/no-img-element */
 import Table from "@/components/Table";
-
+import data from "@/utils/data.json";
+import { calculateStatusAccordingToDate } from "@/utils/helpers";
+import { IPODetailed } from "@/utils/types";
 export default function Home() {
+  const processedData: IPODetailed[] = data
+    .map((el) => {
+      return {
+        ...el,
+        minAmount:
+          el.priceRange.min && el.details.sizePerLot
+            ? el.priceRange.min * el.details.sizePerLot
+            : null,
+        status: calculateStatusAccordingToDate(
+          el.startDate,
+          el.endDate,
+          el.listingDate
+        ),
+      };
+    })
+    .sort((a, b) => +new Date(b.endDate || 0) - +new Date(a.endDate || 0));
+
   return (
     <div className="bg-[#202020] min-h-screen text-white">
       <div className="p-6">
@@ -45,12 +64,14 @@ export default function Home() {
             <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
             <ul className="space-y-3">
               {[
-                'New IPO announced: Tech Innovators Ltd',
-                'Subscription for GreenEnergy IPO closed',
-                'AlliedHealth IPO oversubscribed by 3.2x',
-                'Refunds initiated for UnderSubbed Corp IPO'
+                "New IPO announced: Tech Innovators Ltd",
+                "Subscription for GreenEnergy IPO closed",
+                "AlliedHealth IPO oversubscribed by 3.2x",
+                "Refunds initiated for UnderSubbed Corp IPO",
               ].map((activity, index) => (
-                <li key={index} className="bg-[#333] rounded p-3 text-sm">{activity}</li>
+                <li key={index} className="bg-[#333] rounded p-3 text-sm">
+                  {activity}
+                </li>
               ))}
             </ul>
           </div>
@@ -58,14 +79,16 @@ export default function Home() {
             <h2 className="text-xl font-semibold mb-4">Upcoming Obligations</h2>
             <div className="bg-[#3A3A3A] rounded-lg p-4">
               <h3 className="font-semibold">VAT declaration</h3>
-              <p className="text-sm text-gray-400 mt-1">You have 27 days left to submit the documentation</p>
+              <p className="text-sm text-gray-400 mt-1">
+                You have 27 days left to submit the documentation
+              </p>
             </div>
           </div>
         </div> */}
 
         <div className="mt-6">
           <h2 className="text-xl font-semibold mb-4">Latest IPOs</h2>
-          <Table />
+          <Table processedData={processedData} />
         </div>
       </div>
     </div>

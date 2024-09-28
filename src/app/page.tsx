@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div className="bg-[#202020] min-h-screen text-white">
       <div className="p-6">
-        <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+        <h1 className="text-2xl font-bold mb-6">IPO Listing in NSE/BSE</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
           {[

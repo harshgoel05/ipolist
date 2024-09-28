@@ -1,4 +1,4 @@
-// components/PriceChart.js
+"use client";
 import { Line } from "react-chartjs-2";
 import "chart.js/auto"; // Necessary for chart.js to work
 import { GMPEntry } from "@/utils/types";

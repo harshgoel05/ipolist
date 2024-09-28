@@ -1,15 +1,13 @@
-"use client";
 import React from "react";
 import data from "@/utils/data.json";
 import { convertDateTimeToFullFormatter, formatINR } from "@/utils/helpers";
-import Navbar from "@/components/Navbar";
 import PriceChart from "@/components/LineChart";
-
+import Link from "next/link";
+import { Metadata } from "next";
 export default function IpoDetails({ params }: { params: { slug: string } }) {
   const { slug } = params;
   // Fetch data based on the slug
   const ipoData = data.find((item) => item.slug === slug);
-  console.log(ipoData);
 
   if (!ipoData) {
     return <div>Not Found</div>;
@@ -67,11 +65,14 @@ export default function IpoDetails({ params }: { params: { slug: string } }) {
 
   return (
     <div className="bg-[#202020] min-h-screen text-white">
-      <Navbar />
       <div className="flex bg-[#2A2A2A] p-6">
-        <h1 className="text-gray-400 cursor-pointer">Home</h1>
+        <Link href="/">
+          <h1 className="text-gray-400 cursor-pointer">Home</h1>
+        </Link>
         <p className="text-gray-500 px-2"> / </p>
-        <p className="text-gray-400 cursor-pointer">{ipoData.symbol}</p>
+        <Link href={"/" + ipoData.slug}>
+          <p className="text-gray-400 cursor-pointer">{ipoData.symbol}</p>
+        </Link>
       </div>
       <div className="p-6">
         <div className="mb-6">
@@ -155,4 +156,24 @@ export default function IpoDetails({ params }: { params: { slug: string } }) {
       </div>
     </div>
   );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  // read route params
+  const slug = params.slug;
+
+  const ipoData = data.find((item) => item.slug === slug);
+  console.log(ipoData);
+  if (!ipoData) {
+    return {};
+  }
+
+  return {
+    title: `${ipoData.name} IPO | Grey Market Premium (GMP) & Latest Updates`,
+    description: `Get the latest details on the ${ipoData.name} IPO, including Grey Market Premium (GMP) and more.`,
+  };
 }

@@ -1,11 +1,11 @@
 "use client";
-import React, { useEffect } from "react";
-import data from "./data.json";
-import { IPO } from "../utils/types";
 import {
   calculateStatusAccordingToDate,
   convertDateTimeToDateFormatter,
-} from "../utils/helpers";
+} from "@/utils/helpers";
+import { IPO } from "@/utils/types";
+import React, { useEffect } from "react";
+import data from "@/utils/data.json";
 export default function Table() {
   const limit = 10;
 

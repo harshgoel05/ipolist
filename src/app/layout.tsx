@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "@/globals.css";
 import { Inter } from "next/font/google";
+import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +17,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased`}>{children}</body>
+      <body className={`${inter.className} antialiased`}>
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }

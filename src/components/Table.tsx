@@ -217,7 +217,16 @@ export default function Table({
                       )}
                     </td> */}
                   <td className="px-4 py-3 truncate max-w-36">
-                    {el.latestGmp ? "₹" + el.latestGmp : "--"}
+                    {el.latestGmp
+                      ? "₹" +
+                        el.latestGmp +
+                        (el.priceRange.max &&
+                          " (" +
+                            ((el.latestGmp / el.priceRange.max) * 100).toFixed(
+                              2
+                            )) +
+                        "%)"
+                      : "--"}
                   </td>
                   {/* <td className="px-4 py-3 truncate max-w-36">
                       {el.applyRecommendation == null

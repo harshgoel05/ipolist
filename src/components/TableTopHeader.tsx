@@ -91,7 +91,9 @@ export default function TableTopHeader({
                 clip-rule="evenodd"
               />
             </svg>
-            Filter
+            Filter{" "}
+            {filterOptions.status.length > 0 &&
+              `(${filterOptions.status.length})`}
             <svg
               className="-mr-1 ml-1.5 w-5 h-5"
               fill="currentColor"

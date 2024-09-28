@@ -100,6 +100,26 @@ export default function Table({
             </tr>
           </thead>
           <tbody>
+            {currentData.length === 0 && (
+              <tr>
+                <td
+                  colSpan={TABLE_HEADERS.length}
+                  className="px-4 py-3 text-center font-medium text-gray-900 dark:text-white"
+                >
+                  No data found.
+                  {filterOptions.status.length > 0 && (
+                    <span
+                      className="text-blue-400 ml-2 cursor-pointer text-sm underline"
+                      onClick={() => {
+                        setFilterOptions({ status: [] });
+                      }}
+                    >
+                      Clear filter
+                    </span>
+                  )}
+                </td>
+              </tr>
+            )}
             {currentData.map((el: IPODetailed, index) => {
               return (
                 <tr
@@ -215,7 +235,7 @@ export default function Table({
         <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
           Showing
           <span className="font-semibold text-gray-900 dark:text-white">
-            {(page - 1) * limit + 1} -
+            {currentData.length > 0 ? (page - 1) * limit + 1 : 0} -
             {currentData.length == limit
               ? page * limit
               : (page - 1) * limit + currentData.length}

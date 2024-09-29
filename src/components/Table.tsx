@@ -25,6 +25,7 @@ export default function Table({
     // "Allotment %",
     // "Recommended",
   ];
+
   const limit = 10;
 
   const [currentData, setCurrentData] = React.useState<IPODetailed[]>([]);
@@ -42,6 +43,7 @@ export default function Table({
 
   useEffect(() => {
     // Filter data based on search input if it exists, otherwise use full dataset
+
     let filteredData = search
       ? processedData.filter((el) =>
           el.name.toLowerCase().includes(search.toLowerCase())
@@ -186,7 +188,7 @@ export default function Table({
                     ₹{el.priceRange.min} - ₹{el.priceRange.max}
                   </td>
                   <td className="px-4 py-3 truncate max-w-36">
-                    {el.details.sizePerLot
+                    {el.details?.sizePerLot
                       ? el.details.sizePerLot + " Shares"
                       : "--"}
                   </td>
@@ -194,7 +196,10 @@ export default function Table({
                     {el.minAmount ? `₹${el.minAmount}` : "--"}
                   </td>
                   <td className="px-4 py-3 truncate max-w-36">
-                    ₹{el.details.issueSize?.replace("cr", "Cr")}
+                    ₹
+                    {el.details?.issueSize
+                      ? el.details?.issueSize.replace("cr", "Cr")
+                      : "--"}
                   </td>
                   {/* <td className="px-4 py-3 truncate max-w-36 font-semibold">
                       {el.priceRange.max && el.details.sizePerLot && (

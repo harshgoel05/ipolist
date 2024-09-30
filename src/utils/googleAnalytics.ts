@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-export const GA_TRACKING_ID = "G-X3WE8XVT0C";
+export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_TRACKING_ID || "";
 
 // Function to log page views
 export const pageview = (url: string) => {

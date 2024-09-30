@@ -19,35 +19,27 @@ export default function IpoDetails({ params }: { params: { slug: string } }) {
 
   useEffect(() => {
     setLoader(true);
-    fetch(API_BASE_URL + API_END_POINTS.calendar)
+    fetch(API_BASE_URL + API_END_POINTS.details + slug)
       .then(async (res) => await res.json())
-      .then((data) => {
-        const processedData: IPODetailed[] = data
-          .map((el: IPODetailed) => {
-            return {
-              ...el,
-              minAmount:
-                el.priceRange.min && el.details?.sizePerLot
-                  ? el.priceRange.min * el.details.sizePerLot
-                  : null,
-              status: calculateStatusAccordingToDate(
-                el.startDate,
-                el.endDate,
-                el.listingDate
-              ),
-              latestGmp:
-                el.gmpTimeline?.reduce((prev, current) => {
-                  return prev.date > current.date ? prev : current;
-                })?.price ?? null,
-            };
-          })
-          .sort(
-            (a: IPODetailed, b: IPODetailed) =>
-              +new Date(b.endDate || 0) - +new Date(a.endDate || 0)
-          );
+      .then((el: IPODetailed) => {
+        const processedData = {
+          ...el,
+          minAmount:
+            el.priceRange.min && el.details?.sizePerLot
+              ? el.priceRange.min * el.details.sizePerLot
+              : null,
+          status: calculateStatusAccordingToDate(
+            el.startDate,
+            el.endDate,
+            el.listingDate
+          ),
+          latestGmp:
+            el.gmpTimeline?.reduce((prev, current) => {
+              return prev.date > current.date ? prev : current;
+            })?.price ?? null,
+        };
         // Fetch data based on the slug
-        const ipoData = processedData.find((item) => item.slug === slug);
-        setSelectedIpoData(ipoData);
+        setSelectedIpoData(processedData);
         setLoader(false);
       })
       .catch((e) => {

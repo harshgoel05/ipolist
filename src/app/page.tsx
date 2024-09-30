@@ -65,9 +65,12 @@ export default function Home() {
           {[
             {
               title: "Upcoming IPOs",
-              value: data.filter((el) => el.status === IPOStatus.Upcoming)
-                .length,
-              desc: "Research and apply",
+              value: data.filter(
+                (el) =>
+                  el.status === IPOStatus.Upcoming ||
+                  el.status === IPOStatus.Unknown
+              ).length,
+              desc: "You have time,   research and apply",
             },
             {
               title: "Ongoing IPOs",

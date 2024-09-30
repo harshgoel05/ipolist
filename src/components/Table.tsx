@@ -1,5 +1,5 @@
 "use client";
-import { convertDateTimeToDateFormatter } from "@/utils/helpers";
+import { convertDateTimeToDateFormatter, formatINR } from "@/utils/helpers";
 import { IPODetailed } from "@/utils/types";
 import React, { useEffect, useState } from "react";
 
@@ -87,8 +87,8 @@ export default function Table({
         setFilterOptions={setFilterOptions}
       />
       <div className="overflow-x-auto">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <table className="w-full text-sm text-left text-gray-400">
+          <thead className="text-xs uppercase bg-gray-700 text-gray-400">
             <tr>
               {TABLE_HEADERS.map((el: string) => (
                 <th
@@ -106,7 +106,7 @@ export default function Table({
               <tr>
                 <td
                   colSpan={TABLE_HEADERS.length}
-                  className="px-4 py-3 text-center font-medium text-gray-900 dark:text-white"
+                  className="px-4 py-3 text-center font-medium text-white"
                 >
                   No data found.
                   {filterOptions.status.length > 0 && (
@@ -125,7 +125,7 @@ export default function Table({
             {currentData.map((el: IPODetailed, index) => {
               return (
                 <tr
-                  className="border-b dark:border-gray-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
+                  className="border-b border-gray-700 cursor-pointer hover:bg-gray-800"
                   key={index}
                   onClick={() => {
                     router.push(`/ipo/${el.slug}`);
@@ -133,7 +133,7 @@ export default function Table({
                 >
                   <td
                     scope="row"
-                    className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white truncate max-w-56"
+                    className="px-4 py-3 font-medium whitespace-nowrap text-white truncate max-w-56"
                   >
                     {el.name}
                   </td>
@@ -193,7 +193,7 @@ export default function Table({
                       : "--"}
                   </td>
                   <td className="px-4 py-3 truncate max-w-36">
-                    {el.minAmount ? `₹${el.minAmount}` : "--"}
+                    {el.minAmount ? `${formatINR(el.minAmount)}` : "--"}
                   </td>
                   <td className="px-4 py-3 truncate max-w-36">
                     ₹
@@ -250,16 +250,16 @@ export default function Table({
         className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
         aria-label="Table navigation"
       >
-        <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+        <span className="text-sm font-normaltext-gray-400">
           Showing
-          <span className="font-semibold text-gray-900 dark:text-white">
+          <span className="font-semibold text-white">
             {currentData.length > 0 ? (page - 1) * limit + 1 : 0} -
             {currentData.length == limit
               ? page * limit
               : (page - 1) * limit + currentData.length}
           </span>
           of
-          <span className="font-semibold text-gray-900 dark:text-white">
+          <span className="font-semibold text-white">
             {processedData.length}
           </span>
         </span>

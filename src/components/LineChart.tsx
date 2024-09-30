@@ -50,7 +50,7 @@ const PriceChart = ({ gmpTimeline }: { gmpTimeline: GMPEntry[] }) => {
   };
 
   return (
-    <div className="w-1/2 bg-[#2A2A2A] p-8">
+    <div className="w-full sm:w-1/2 bg-[#2A2A2A] p-8">
       <h2 className="text-xl font-semibold mb-4">Grey Market Premium Trend</h2>
       <Line data={chartData} options={chartOptions} />
     </div>

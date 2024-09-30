@@ -144,7 +144,7 @@ export default function TableTopHeader({
                       checked={
                         filterOptions.status.includes(el[0]) ? true : false
                       }
-                      className="w-4 h-4 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 ring-offset-gray-700 focus:ring-2 bg-gray-600 border-gray-500"
+                      className="w-4 h-4 rounded text-primary-600 focus:ring-primary-500 focus:ring-primary-600 ring-offset-gray-700 focus:ring-2 bg-gray-600 border-gray-500"
                     />
                     <label
                       htmlFor="apple"

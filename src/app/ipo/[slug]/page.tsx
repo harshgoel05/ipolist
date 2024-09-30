@@ -1,6 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-"use client";
-import React, { useEffect, useState } from "react";
 import {
   calculateStatusAccordingToDate,
   convertDateTimeToFullFormatter,
@@ -10,45 +8,43 @@ import PriceChart from "@/components/LineChart";
 import Link from "next/link";
 import { API_BASE_URL, API_END_POINTS } from "@/utils/constants";
 import { IPODetailed } from "@/utils/types";
-export default function IpoDetails({ params }: { params: { slug: string } }) {
-  const [selectedIpoData, setSelectedIpoData] = useState<IPODetailed | null>();
-  const [loader, setLoader] = useState(true);
+import { notFound } from "next/navigation";
+import { Metadata } from "next";
+export default async function IpoDetails({
+  params,
+}: {
+  params: { slug: string };
+}) {
   // Fetch data from the server
 
   const { slug } = params;
 
-  useEffect(() => {
-    setLoader(true);
-    fetch(API_BASE_URL + API_END_POINTS.details + slug)
-      .then(async (res) => await res.json())
-      .then((el: IPODetailed) => {
-        const processedData = {
-          ...el,
-          minAmount:
-            el.priceRange.min && el.details?.sizePerLot
-              ? el.priceRange.min * el.details.sizePerLot
-              : null,
-          status: calculateStatusAccordingToDate(
-            el.startDate,
-            el.endDate,
-            el.listingDate
-          ),
-          latestGmp:
-            el.gmpTimeline?.reduce((prev, current) => {
-              return prev.date > current.date ? prev : current;
-            })?.price ?? null,
-        };
-        // Fetch data based on the slug
-        setSelectedIpoData(processedData);
-        setLoader(false);
-      })
-      .catch((e) => {
-        console.error(e);
-        setLoader(false);
-      });
-  }, [slug]);
+  const res = await fetch(API_BASE_URL + API_END_POINTS.details + slug);
 
-  if (loader) {
+  if (!res.ok) {
+    notFound(); // Return a 404 if the API call fails
+  }
+
+  const el: IPODetailed = await res.json();
+
+  const selectedIpoData = {
+    ...el,
+    minAmount:
+      el.priceRange.min && el.details?.sizePerLot
+        ? el.priceRange.min * el.details.sizePerLot
+        : null,
+    status: calculateStatusAccordingToDate(
+      el.startDate,
+      el.endDate,
+      el.listingDate
+    ),
+    latestGmp:
+      el.gmpTimeline?.reduce((prev, current) => {
+        return prev.date > current.date ? prev : current;
+      })?.price ?? null,
+  };
+
+  if (!selectedIpoData) {
     return (
       <div className="bg-[#202020] min-h-screen text-white">
         {/* Spinner */}
@@ -57,10 +53,6 @@ export default function IpoDetails({ params }: { params: { slug: string } }) {
         </div>
       </div>
     );
-  }
-
-  if (!selectedIpoData) {
-    return <div>Not Found</div>;
   }
 
   const cardsData = [
@@ -236,22 +228,29 @@ export default function IpoDetails({ params }: { params: { slug: string } }) {
   );
 }
 
-// export async function generateMetadata({
-//   params,
-// }: {
-//   params: { slug: string };
-// }): Promise<Metadata> {
-//   // read route params
-//   const slug = params.slug;
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  // read route params
+  const slug = params.slug;
 
-//   const ipoData = data.find((item) => item.slug === slug);
-//   console.log(ipoData);
-//   if (!ipoData) {
-//     return {};
-//   }
+  const res = await fetch(API_BASE_URL + API_END_POINTS.details + slug);
+  if (!res.ok) {
+    return {
+      title: "IPO Not Found",
+      description: "The IPO you are looking for does not exist.",
+    };
+  }
+  const ipoData: IPODetailed = await res.json();
 
-//   return {
-//     title: `${ipoData.name} IPO | Grey Market Premium (GMP) & Latest Updates`,
-//     description: `Get the latest details on the ${ipoData.name} IPO, including Grey Market Premium (GMP) and more.`,
-//   };
-// }
+  if (!ipoData) {
+    return {};
+  }
+
+  return {
+    title: `${ipoData.name} IPO | Grey Market Premium (GMP) & Latest Updates`,
+    description: `Get the latest details on the ${ipoData.name} IPO, including Grey Market Premium (GMP) and more.`,
+  };
+}

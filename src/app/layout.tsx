@@ -13,16 +13,18 @@ export const metadata: Metadata = {
     "upcoming IPOs India 2024, IPO list 2024, IPO listings, IPO GMP, latest IPOs, IPO subscription status, Grey Market Premium, IPO analysis, new IPOs, IPO dates",
   viewport: "width=device-width, initial-scale=1",
   robots: "index, follow",
-  // canonical: "https://www.yoursite.com/upcoming-ipos", // Ensure proper canonical URL
+  alternates: {
+    canonical: "https://www.theipolist.in",
+  }, // Ensure proper canonical URL
   openGraph: {
     title: "Upcoming IPOs & IPO Listings in India 2024 | GMP, Analysis, Dates",
     description:
       "Stay ahead with real-time updates on IPO listings, Grey Market Premium, and upcoming IPOs in India for 2024.",
-    url: "https://theipolist.in/upcoming-ipos",
+    url: "https://theipolist.in",
     type: "website",
     images: [
       {
-        url: "https://www.theipolist.in/images/ipo-listing-thumbnail.png",
+        url: "https://theipolist.in/images/ipo-listing-thumbnail.png",
         width: 1200,
         height: 630,
         alt: "Upcoming IPOs in India",
@@ -37,7 +39,7 @@ export const metadata: Metadata = {
       "Find the most accurate and updated information on upcoming IPOs in India. Detailed IPO listings, company analysis, and market insights.",
     images: [
       {
-        url: "https://www.theipolist.in/images/ipo-listing-thumbnail.png",
+        url: "https://theipolist.in/images/ipo-listing-thumbnail.png",
         alt: "Upcoming IPOs & IPO Listings in India 2024 | GMP, Analysis, Dates",
       },
     ],

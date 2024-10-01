@@ -219,27 +219,44 @@ export default async function IpoDetails({
           <div className="bg-[#2A2A2A] rounded-lg p-4 flex flex-col gap-2 flex-1 min-w-[300px] md:flex-[0_0_66%]">
             <div className="flex flex-col gap-2">
               <h2 className="text-xl font-semibold">About the Company</h2>
-              <p className="text-gray-400">{selectedIpoData.details?.about}</p>
+              <p className="text-gray-400 text-sm">
+                {selectedIpoData.details?.about}
+              </p>
             </div>
-            <div className="flex flex-col gap-2">
-              <h2 className="text-xl font-semibold">Strengths</h2>
-              <ol className="flex flex-col gap-1 list-decimal pl-6">
-                {selectedIpoData.details?.strengths.map((strength, index) => (
-                  <li key={index} className="text-gray-400 pl-2">
-                    {strength}
-                  </li>
-                ))}
-              </ol>
-            </div>
+            {
+              <div className="flex flex-col gap-2">
+                <h2 className="text-xl font-semibold">Strengths</h2>
+
+                {selectedIpoData.details?.strengths.length &&
+                selectedIpoData.details.strengths.length > 0 ? (
+                  <ol className="flex flex-col gap-1 list-decimal pl-6">
+                    {selectedIpoData.details?.strengths.map(
+                      (strength, index) => (
+                        <li key={index} className="text-gray-400 pl-2">
+                          {strength}
+                        </li>
+                      )
+                    )}
+                  </ol>
+                ) : (
+                  <p className="text-gray-400">--</p>
+                )}
+              </div>
+            }
             <div className="flex flex-col gap-2">
               <h2 className="text-xl font-semibold">Risks</h2>
-              <ol className="flex flex-col gap-1 list-decimal pl-6">
-                {selectedIpoData.details?.risks.map((risk, index) => (
-                  <li key={index} className="text-gray-400 pl-2">
-                    {risk}
-                  </li>
-                ))}
-              </ol>
+              {selectedIpoData.details?.risks.length &&
+              selectedIpoData.details.risks.length > 0 ? (
+                <ol className="flex flex-col gap-1 list-decimal pl-6">
+                  {selectedIpoData.details?.risks.map((risks, index) => (
+                    <li key={index} className="text-gray-400 pl-2">
+                      {risks}
+                    </li>
+                  ))}
+                </ol>
+              ) : (
+                <p className="text-gray-400">--</p>
+              )}
             </div>
           </div>
 

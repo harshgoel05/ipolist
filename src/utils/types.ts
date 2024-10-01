@@ -50,7 +50,7 @@ export enum IPOStatus {
   Open = "Open",
   Closed = "Closed",
   Listed = "Listed",
-  Unknown = "Unknown",
+  ComingSoon = "Coming Soon",
 }
 
 /*

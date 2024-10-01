@@ -62,7 +62,7 @@ export default async function Home() {
               value: data.filter(
                 (el) =>
                   el.status === IPOStatus.Upcoming ||
-                  el.status === IPOStatus.Unknown
+                  el.status === IPOStatus.ComingSoon
               ).length,
               desc: "You have time,   research and apply",
             },

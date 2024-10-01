@@ -84,7 +84,7 @@ export function calculateStatusAccordingToDate(
   listingDate: string | null
 ): (typeof IPOStatus)[keyof typeof IPOStatus] {
   if (!startDate || !endDate || !listingDate) {
-    return IPOStatus.Unknown;
+    return IPOStatus.ComingSoon;
   }
 
   const currentDate = new Date();

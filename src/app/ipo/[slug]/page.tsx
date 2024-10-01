@@ -16,40 +16,44 @@ export default async function IpoDetails({
   params: { slug: string };
 }) {
   // Fetch data from the server
+  let selectedIpoData: IPODetailed | null = null;
+  try {
+    const { slug } = params;
 
-  const { slug } = params;
+    const res = await fetch(API_BASE_URL + API_END_POINTS.details + slug);
 
-  const res = await fetch(API_BASE_URL + API_END_POINTS.details + slug);
+    if (!res.ok) {
+      notFound(); // Return a 404 if the API call fails
+    }
 
-  if (!res.ok) {
-    notFound(); // Return a 404 if the API call fails
+    const el: IPODetailed = await res.json();
+
+    selectedIpoData = {
+      ...el,
+      minAmount:
+        el.priceRange.min && el.details?.sizePerLot
+          ? el.priceRange.min * el.details.sizePerLot
+          : null,
+      status: calculateStatusAccordingToDate(
+        el.startDate,
+        el.endDate,
+        el.listingDate
+      ),
+      latestGmp:
+        el.gmpTimeline?.reduce((prev, current) => {
+          return prev.date > current.date ? prev : current;
+        })?.price ?? null,
+    };
+  } catch (e) {
+    console.error(e);
+    notFound();
   }
-
-  const el: IPODetailed = await res.json();
-
-  const selectedIpoData = {
-    ...el,
-    minAmount:
-      el.priceRange.min && el.details?.sizePerLot
-        ? el.priceRange.min * el.details.sizePerLot
-        : null,
-    status: calculateStatusAccordingToDate(
-      el.startDate,
-      el.endDate,
-      el.listingDate
-    ),
-    latestGmp:
-      el.gmpTimeline?.reduce((prev, current) => {
-        return prev.date > current.date ? prev : current;
-      })?.price ?? null,
-  };
 
   if (!selectedIpoData) {
     return (
-      <div className="bg-[#202020] min-h-screen text-white">
-        {/* Spinner */}
+      <div className="bg-[#202020] min-h-screen">
         <div className="flex justify-center items-center h-screen">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#333]"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>
         </div>
       </div>
     );

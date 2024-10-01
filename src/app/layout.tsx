@@ -3,6 +3,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Upcoming IPOs & IPO Listings in India 2024 | GMP, Analysis, Dates",
@@ -54,7 +55,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
         <Navbar />
-        {children}
+        <Suspense>{children}</Suspense>
         <Footer />
         <script
           async

@@ -1,56 +1,50 @@
-"use client";
 import Table from "@/components/Table";
 import { API_BASE_URL, API_END_POINTS } from "@/utils/constants";
 import { calculateStatusAccordingToDate } from "@/utils/helpers";
 import { IPODetailed, IPOStatus } from "@/utils/types";
-import { useEffect, useState } from "react";
-export default function Home() {
-  const [data, setData] = useState<IPODetailed[]>([]);
-  const [loader, setLoader] = useState(true);
-  // Fetch data from the server
-  useEffect(() => {
-    setLoader(true);
-    fetch(API_BASE_URL + API_END_POINTS.calendar)
-      .then(async (res) => await res.json())
-      .then((data) => {
-        const processedData: IPODetailed[] = data
-          .map((el: IPODetailed) => {
-            return {
-              ...el,
-              minAmount:
-                el.priceRange.min && el.details?.sizePerLot
-                  ? el.priceRange.min * el.details.sizePerLot
-                  : null,
-              status: calculateStatusAccordingToDate(
-                el.startDate,
-                el.endDate,
-                el.listingDate
-              ),
-              latestGmp:
-                el.gmpTimeline?.reduce((prev, current) => {
-                  return prev.date > current.date ? prev : current;
-                })?.price ?? null,
-            };
-          })
-          .sort(
-            (a: IPODetailed, b: IPODetailed) =>
-              +new Date(b.endDate || 0) - +new Date(a.endDate || 0)
-          );
-        setData(processedData);
-        setLoader(false);
-      })
-      .catch((e) => {
-        console.error(e);
-        setLoader(false);
-      });
-  }, []);
+import { notFound } from "next/navigation";
+export default async function Home() {
+  let data: IPODetailed[] | null = null;
+  try {
+    const res = await fetch(API_BASE_URL + API_END_POINTS.calendar);
+    if (!res.ok) {
+      notFound(); // Return a 404 if the API call fails
+    }
+    const response: IPODetailed[] = await res.json();
 
-  if (loader) {
+    data = response
+      .map((el: IPODetailed) => {
+        return {
+          ...el,
+          minAmount:
+            el.priceRange.min && el.details?.sizePerLot
+              ? el.priceRange.min * el.details.sizePerLot
+              : null,
+          status: calculateStatusAccordingToDate(
+            el.startDate,
+            el.endDate,
+            el.listingDate
+          ),
+          latestGmp:
+            el.gmpTimeline?.reduce((prev, current) => {
+              return prev.date > current.date ? prev : current;
+            })?.price ?? null,
+        };
+      })
+      .sort(
+        (a: IPODetailed, b: IPODetailed) =>
+          +new Date(b.endDate || 0) - +new Date(a.endDate || 0)
+      );
+  } catch (e) {
+    console.error(e);
+    notFound();
+  }
+
+  if (!data) {
     return (
-      <div className="bg-[#202020] min-h-screen text-white">
-        {/* Spinner */}
+      <div className="bg-[#202020] min-h-screen">
         <div className="flex justify-center items-center h-screen">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#333]"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>
         </div>
       </div>
     );

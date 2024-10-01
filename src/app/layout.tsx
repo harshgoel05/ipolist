@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://theipolist.in/images/ipo-listing-thumbnail.png",
+        url: "https://theipolist.in/images/ipo-listing-thumbnail.jpg",
         width: 1200,
         height: 630,
         alt: "Upcoming IPOs in India",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
       "Find the most accurate and updated information on upcoming IPOs in India. Detailed IPO listings, company analysis, and market insights.",
     images: [
       {
-        url: "https://theipolist.in/images/ipo-listing-thumbnail.png",
+        url: "https://theipolist.in/images/ipo-listing-thumbnail.jpg",
         alt: "Upcoming IPOs & IPO Listings in India 2024 | GMP, Analysis, Dates",
       },
     ],

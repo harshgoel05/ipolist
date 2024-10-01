@@ -185,7 +185,8 @@ export default function Table({
                     </div>
                   </td>
                   <td className="px-4 py-3 truncate max-w-36">
-                    ₹{el.priceRange.min} - ₹{el.priceRange.max}
+                    ₹{el.priceRange.min ? el.priceRange.min : "--"} - ₹
+                    {el.priceRange.max ? el.priceRange.max : "--"}
                   </td>
                   <td className="px-4 py-3 truncate max-w-36">
                     {el.details?.sizePerLot
@@ -251,14 +252,14 @@ export default function Table({
         aria-label="Table navigation"
       >
         <span className="text-sm font-normaltext-gray-400">
-          Showing
+          Showing{" "}
           <span className="font-semibold text-white">
             {currentData.length > 0 ? (page - 1) * limit + 1 : 0} -
             {currentData.length == limit
               ? page * limit
               : (page - 1) * limit + currentData.length}
-          </span>
-          of
+          </span>{" "}
+          of{" "}
           <span className="font-semibold text-white">
             {processedData.length}
           </span>

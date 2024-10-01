@@ -17,8 +17,8 @@ export default function TableNav({
             if (page > 1) setPage(page - 1);
           }}
           className={
-            "flex items-center justify-center h-full py-1.5 px-3 ml-0 rounded-l-lg borderbg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white " +
-            (page > 1 ? "cursor-pointer" : "cursor-not-allowed")
+            "flex items-center justify-center h-full py-1.5 px-3 leading-tight rounded-l-lg border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white " +
+            (page > 1 ? "cursor-pointer " : "cursor-not-allowed")
           }
         >
           <span className="sr-only">Previous</span>
@@ -30,14 +30,14 @@ export default function TableNav({
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              fill-rule="evenodd"
+              fillRule="evenodd"
               d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-              clip-rule="evenodd"
+              clipRule="evenodd"
             />
           </svg>
         </a>
       </li>
-      {Array.from({ length: totalPages }, (_, i) => (
+      {Array.from({ length: totalPages == 0 ? 1 : totalPages }, (_, i) => (
         <li
           key={i}
           onClick={() => setPage(i + 1)}
@@ -68,9 +68,9 @@ export default function TableNav({
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              fill-rule="evenodd"
+              fillRule="evenodd"
               d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-              clip-rule="evenodd"
+              clipRule="evenodd"
             />
           </svg>
         </a>

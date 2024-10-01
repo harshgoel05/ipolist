@@ -10,6 +10,7 @@ import { API_BASE_URL, API_END_POINTS } from "@/utils/constants";
 import { IPODetailed } from "@/utils/types";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import Image from "next/image";
 
 export const revalidate = 60;
 
@@ -145,11 +146,16 @@ export default async function IpoDetails({
       <div className="p-6">
         <div className="mb-6">
           <div className="flex items-center gap-4">
-            <img
-              src={selectedIpoData.logoUrl}
-              alt={selectedIpoData.name}
-              className="w-14"
-            />
+            <div className="h-28 w-full max-w-28 relative">
+              <Image
+                src={selectedIpoData.logoUrl}
+                alt={selectedIpoData.name}
+                fill
+                style={{
+                  objectFit: "contain",
+                }}
+              />
+            </div>
             <div className="flex flex-col">
               <h1 className="text-2xl font-bold">{selectedIpoData.name}</h1>
               <p className="text-gray-400">{selectedIpoData.symbol}</p>

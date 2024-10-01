@@ -138,6 +138,7 @@ export default function TableTopHeader({
                           };
                         });
                       }}
+                      onChange={() => {}}
                       checked={filterOptions.status.includes(el) ? true : false}
                       className="cursor-pointer w-4 h-4 rounded text-primary-600 focus:ring-primary-500 focus:ring-primary-600 ring-offset-gray-700 focus:ring-2 bg-gray-600 border-gray-500"
                     />

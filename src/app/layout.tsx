@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Suspense } from "react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "Upcoming IPOs & IPO Listings in India 2024 | GMP, Analysis, Dates",
@@ -59,6 +60,7 @@ export default function RootLayout({
         <Navbar />
         <Suspense>{children}</Suspense>
         <Footer />
+        <SpeedInsights />
         <script
           async
           src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_TRACKING_ID}`}

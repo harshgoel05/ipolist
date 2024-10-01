@@ -121,36 +121,31 @@ export default function TableTopHeader({
               className="space-y-2 text-sm"
               aria-labelledby="filterDropdownButton"
             >
-              {Object.entries(IPOStatus).map((el) => {
+              {Object.values(IPOStatus).map((el, index) => {
                 return (
-                  <li
-                    className="flex items-center"
-                    key={el[0]}
-                    onClick={() => {
-                      setFilterOptions((prev) => {
-                        return {
-                          ...prev,
-                          status: prev.status.includes(el[0])
-                            ? prev.status.filter((x) => x !== el[0])
-                            : [...prev.status, el[0]],
-                        };
-                      });
-                    }}
-                  >
+                  <li className="flex items-center" key={index}>
                     <input
-                      id="apple"
+                      id={el}
                       type="checkbox"
-                      value={el[0]}
-                      checked={
-                        filterOptions.status.includes(el[0]) ? true : false
-                      }
+                      value={el}
+                      onClick={() => {
+                        setFilterOptions((prev) => {
+                          return {
+                            ...prev,
+                            status: prev.status.includes(el)
+                              ? prev.status.filter((x) => x !== el)
+                              : [...prev.status, el],
+                          };
+                        });
+                      }}
+                      checked={filterOptions.status.includes(el) ? true : false}
                       className="w-4 h-4 rounded text-primary-600 focus:ring-primary-500 focus:ring-primary-600 ring-offset-gray-700 focus:ring-2 bg-gray-600 border-gray-500"
                     />
                     <label
-                      htmlFor="apple"
+                      htmlFor={el}
                       className="ml-2 text-sm font-medium text-gray-100"
                     >
-                      {el[1]}
+                      {el}
                     </label>
                   </li>
                 );

@@ -5,13 +5,42 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "IPO Listings in India | GMP, Company Details & Latest Updates",
+  title: "Upcoming IPOs & IPO Listings in India 2024 | GMP, Analysis, Dates",
   description:
-    "Get the latest information on IPO listings in India, Grey Market Premium (GMP), company details, IPO dates, and expert analysis. Stay updated with upcoming IPOs, subscription status, and more.",
+    "Discover the latest upcoming IPOs in India for 2024. Get real-time updates on IPO listings, Grey Market Premium (GMP), company details, IPO dates, subscription status, and expert analysis.",
   keywords:
-    "IPO listings India, IPO GMP, IPO details, upcoming IPOs, IPO news, IPO subscription status, IPO market updates, Grey Market Premium, company IPO information",
+    "upcoming IPOs India 2024, IPO list 2024, IPO listings, IPO GMP, latest IPOs, IPO subscription status, Grey Market Premium, IPO analysis, new IPOs, IPO dates",
   viewport: "width=device-width, initial-scale=1",
   robots: "index, follow",
+  // canonical: "https://www.yoursite.com/upcoming-ipos", // Ensure proper canonical URL
+  openGraph: {
+    title: "Upcoming IPOs & IPO Listings in India 2024 | GMP, Analysis, Dates",
+    description:
+      "Stay ahead with real-time updates on IPO listings, Grey Market Premium, and upcoming IPOs in India for 2024.",
+    url: "https://theipolist.in/upcoming-ipos",
+    type: "website",
+    images: [
+      {
+        url: "https://www.theipolist.in/images/ipo-listing-thumbnail.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Upcoming IPOs in India",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    // site: "@YourTwitterHandle",
+    title: "Upcoming IPOs & IPO Listings in India 2024 | GMP, Analysis, Dates",
+    description:
+      "Find the most accurate and updated information on upcoming IPOs in India. Detailed IPO listings, company analysis, and market insights.",
+    images: [
+      {
+        url: "https://www.theipolist.in/images/ipo-listing-thumbnail.jpg",
+        alt: "Upcoming IPOs & IPO Listings in India 2024 | GMP, Analysis, Dates",
+      },
+    ],
+  },
 };
 
 const inter = Inter({ subsets: ["latin"] });

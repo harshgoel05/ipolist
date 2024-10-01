@@ -10,6 +10,20 @@ import { API_BASE_URL, API_END_POINTS } from "@/utils/constants";
 import { IPODetailed } from "@/utils/types";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+
+export const revalidate = 60;
+
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  const ipoList: IPODetailed[] = await fetch(
+    API_BASE_URL + API_END_POINTS.calendar
+  ).then((res) => res.json());
+  return ipoList.map((ipo: IPODetailed) => ({
+    slug: String(ipo.slug),
+  }));
+}
+
 export default async function IpoDetails({
   params,
 }: {

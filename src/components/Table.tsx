@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 
 import TableNav from "./TableNav";
 import TableTopHeader from "./TableTopHeader";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Table({
   processedData,
@@ -76,8 +76,6 @@ export default function Table({
     setPage(1);
   }, [search, filterOptions]);
 
-  const router = useRouter();
-
   return (
     <div className="border border-gray-700 relative shadow-md sm:rounded-lg w-full">
       <TableTopHeader
@@ -124,85 +122,88 @@ export default function Table({
             )}
             {currentData.map((el: IPODetailed, index) => {
               return (
-                <tr
-                  className="border-b border-gray-700 cursor-pointer hover:bg-gray-800"
+                <Link
+                  href={`/ipo-details/${el.slug}`}
+                  passHref
+                  legacyBehavior
                   key={index}
-                  onClick={() => {
-                    router.push(`/ipo/${el.slug}`);
-                  }}
                 >
-                  <td
-                    scope="row"
-                    className="px-4 py-3 font-medium whitespace-nowrap text-white truncate max-w-56"
+                  <tr
+                    className="border-b border-gray-700 cursor-pointer hover:bg-gray-800"
+                    key={index}
                   >
-                    {el.name}
-                  </td>
-                  <td className="flex px-4 py-3 truncate max-w-36 ">
-                    {el.startDate && (
-                      <p
-                        className={
-                          new Date(el.startDate).getDate() ===
-                          new Date().getDate()
-                            ? "text-green-500"
-                            : ""
-                        }
-                      >
-                        {convertDateTimeToDateFormatter(el.startDate)} -{" "}
-                      </p>
-                    )}
-                    {el.endDate && (
-                      <p
-                        className={
-                          new Date(el.endDate).getDate() ===
-                          new Date().getDate()
-                            ? "text-red-500"
-                            : ""
-                        }
-                      >
-                        {convertDateTimeToDateFormatter(el.endDate)}
-                      </p>
-                    )}
-                  </td>
-                  <td className="px-4 py-3 truncate max-w-36">
-                    {el.listingDate
-                      ? convertDateTimeToDateFormatter(el.listingDate)
-                      : "--"}
-                  </td>
-                  <td className="px-4 py-3 truncate max-w-36">
-                    <div
-                      className={
-                        "text-black text-xs rounded-full text-center px-2 py-1 " +
-                        (el.status === "Open"
-                          ? "bg-green-400"
-                          : el.status === "Closed"
-                          ? "bg-red-400"
-                          : el.status === "Listed"
-                          ? "bg-blue-400"
-                          : "bg-yellow-400")
-                      }
+                    <td
+                      scope="row"
+                      className="px-4 py-3 font-medium whitespace-nowrap text-white truncate max-w-56"
                     >
-                      {el.status}
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 truncate max-w-36">
-                    ₹{el.priceRange.min ? el.priceRange.min : "--"} - ₹
-                    {el.priceRange.max ? el.priceRange.max : "--"}
-                  </td>
-                  <td className="px-4 py-3 truncate max-w-36">
-                    {el.details?.sizePerLot
-                      ? el.details.sizePerLot + " Shares"
-                      : "--"}
-                  </td>
-                  <td className="px-4 py-3 truncate max-w-36">
-                    {el.minAmount ? `${formatINR(el.minAmount)}` : "--"}
-                  </td>
-                  <td className="px-4 py-3 truncate max-w-36">
-                    ₹
-                    {el.details?.issueSize
-                      ? el.details?.issueSize.replace("cr", "Cr")
-                      : "--"}
-                  </td>
-                  {/* <td className="px-4 py-3 truncate max-w-36 font-semibold">
+                      {el.name}
+                    </td>
+                    <td className="flex px-4 py-3 truncate max-w-36 ">
+                      {el.startDate && (
+                        <p
+                          className={
+                            new Date(el.startDate).getDate() ===
+                            new Date().getDate()
+                              ? "text-green-500"
+                              : ""
+                          }
+                        >
+                          {convertDateTimeToDateFormatter(el.startDate)} -{" "}
+                        </p>
+                      )}
+                      {el.endDate && (
+                        <p
+                          className={
+                            new Date(el.endDate).getDate() ===
+                            new Date().getDate()
+                              ? "text-red-500"
+                              : ""
+                          }
+                        >
+                          {convertDateTimeToDateFormatter(el.endDate)}
+                        </p>
+                      )}
+                    </td>
+                    <td className="px-4 py-3 truncate max-w-36">
+                      {el.listingDate
+                        ? convertDateTimeToDateFormatter(el.listingDate)
+                        : "--"}
+                    </td>
+                    <td className="px-4 py-3 truncate max-w-36">
+                      <div
+                        className={
+                          "text-black text-xs rounded-full text-center px-2 py-1 " +
+                          (el.status === "Open"
+                            ? "bg-green-400"
+                            : el.status === "Closed"
+                            ? "bg-red-400"
+                            : el.status === "Listed"
+                            ? "bg-blue-400"
+                            : "bg-yellow-400")
+                        }
+                      >
+                        {el.status}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 truncate max-w-36">
+                      ₹{el.priceRange.min ? el.priceRange.min : "--"} - ₹
+                      {el.priceRange.max ? el.priceRange.max : "--"}
+                    </td>
+                    <td className="px-4 py-3 truncate max-w-36">
+                      {el.details?.sizePerLot
+                        ? el.details.sizePerLot + " Shares"
+                        : "--"}
+                    </td>
+                    <td className="px-4 py-3 truncate max-w-36">
+                      {el.minAmount ? `${formatINR(el.minAmount)}` : "--"}
+                    </td>
+                    <td className="px-4 py-3 truncate max-w-36">
+                      ₹
+                      {el.details?.issueSize
+                        ? el.details?.issueSize.replace("cr", "Cr")
+                        : "--"}
+                    </td>
+                    {/* <td className="px-4 py-3 truncate max-w-36 font-semibold">
                       {el.priceRange.max && el.details.sizePerLot && (
                         <p
                           className={
@@ -222,26 +223,28 @@ export default function Table({
                         </p>
                       )}
                     </td> */}
-                  <td className="px-4 py-3 truncate max-w-36">
-                    {el.latestGmp
-                      ? "₹" +
-                        el.latestGmp +
-                        (el.priceRange.max &&
-                          " (" +
-                            ((el.latestGmp / el.priceRange.max) * 100).toFixed(
-                              2
-                            )) +
-                        "%)"
-                      : "--"}
-                  </td>
-                  {/* <td className="px-4 py-3 truncate max-w-36">
+                    <td className="px-4 py-3 truncate max-w-36">
+                      {el.latestGmp
+                        ? "₹" +
+                          el.latestGmp +
+                          (el.priceRange.max &&
+                            " (" +
+                              (
+                                (el.latestGmp / el.priceRange.max) *
+                                100
+                              ).toFixed(2)) +
+                          "%)"
+                        : "--"}
+                    </td>
+                    {/* <td className="px-4 py-3 truncate max-w-36">
                       {el.applyRecommendation == null
                         ? "N/A"
                         : el.applyRecommendation == true
                         ? "Yes"
                         : "No"}
                     </td> */}
-                </tr>
+                  </tr>
+                </Link>
               );
             })}
           </tbody>

@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://theipolist.in
+
+# Sitemaps
+Sitemap: https://theipolist.in/sitemap.xml

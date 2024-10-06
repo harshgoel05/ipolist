@@ -3,6 +3,9 @@ import { API_BASE_URL, API_END_POINTS } from "@/utils/constants";
 import { calculateStatusAccordingToDate } from "@/utils/helpers";
 import { IPODetailed, IPOStatus } from "@/utils/types";
 import { notFound } from "next/navigation";
+
+export const revalidate = 60;
+
 export default async function Home() {
   let data: IPODetailed[] | null = null;
   try {
@@ -35,6 +38,8 @@ export default async function Home() {
         (a: IPODetailed, b: IPODetailed) =>
           +new Date(b.endDate || 0) - +new Date(a.endDate || 0)
       );
+
+    console.log(data.map((el) => el.slug));
   } catch (e) {
     console.error(e);
     notFound();

@@ -232,8 +232,8 @@ export default function Table({
                               (
                                 (el.latestGmp / el.priceRange.max) *
                                 100
-                              ).toFixed(2)) +
-                          "%)"
+                              ).toFixed(2) +
+                              "%)")
                         : "--"}
                     </td>
                     {/* <td className="px-4 py-3 truncate max-w-36">

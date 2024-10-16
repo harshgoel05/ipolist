@@ -292,6 +292,6 @@ export async function generateMetadata({
 
   return {
     title: `${ipoData.name} IPO | Grey Market Premium (GMP) & Latest Updates`,
-    description: `Get the latest details on the ${ipoData.name} IPO, including Grey Market Premium (GMP) and more.`,
+    description: `${ipoData.name} IPO opens on ${ipoData.startDate} and closes on ${ipoData.endDate}, Learn more about ${ipoData.name} IPO including Grey Market Premium (GMP) and more.`,
   };
 }

@@ -64,11 +64,8 @@ export default async function Home() {
           {[
             {
               title: "Upcoming IPOs",
-              value: data.filter(
-                (el) =>
-                  el.status === IPOStatus.Upcoming ||
-                  el.status === IPOStatus.ComingSoon
-              ).length,
+              value: data.filter((el) => el.status === IPOStatus.Upcoming)
+                .length,
               desc: "You have time,   research and apply",
             },
             {

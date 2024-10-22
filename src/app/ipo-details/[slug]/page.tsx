@@ -290,6 +290,13 @@ export async function generateMetadata({
     return {};
   }
 
+  if (ipoData.latestGmp) {
+    return {
+      title: `${ipoData.name} IPO | Grey Market Premium (GMP) & Latest Updates`,
+      description: `${ipoData.name} IPO opens on ${ipoData.startDate} and closes on ${ipoData.endDate}, Current GMP of ${ipoData.name} is : ${ipoData.latestGmp}, Learn more about ${ipoData.symbol} IPO including Grey Market Premium (GMP) and more.`,
+    };
+  }
+
   return {
     title: `${ipoData.name} IPO | Grey Market Premium (GMP) & Latest Updates`,
     description: `${ipoData.name} IPO opens on ${ipoData.startDate} and closes on ${ipoData.endDate}, Learn more about ${ipoData.name} IPO including Grey Market Premium (GMP) and more.`,

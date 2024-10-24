@@ -56,7 +56,7 @@ export function formatINR(amount: number | null | undefined): string {
 }
 
 export function convertDateTimeToDateFormatter(dateTime: string): string {
-  const date = new Date(dateTime);
+  const date = convertDateTimeToIST(new Date(dateTime));
   const day = date.getDate();
   const month = date.getMonth();
   return `${day} ${MONTH_NAMES_SHORT[month]}`;
@@ -67,7 +67,7 @@ export function convertDateTimeToFullFormatter(
 ): string {
   try {
     if (!dateTime) return "--";
-    const date = new Date(dateTime);
+    const date = convertDateTimeToIST(new Date(dateTime));
     const day = date.getDate();
     const month = date.getMonth();
     const year = date.getFullYear();
@@ -102,4 +102,12 @@ export function calculateStatusAccordingToDate(
   } else {
     return IPOStatus.Closed;
   }
+}
+
+export function convertDateTimeToIST(date: Date): Date {
+  // Convert to IST (Indian Standard Time)
+  const IST_OFFSET = 5 * 60 + 30; // IST is UTC+5:30
+  const localOffset = date.getTimezoneOffset(); // Local timezone offset in minutes
+  date = new Date(date.getTime() + (IST_OFFSET - localOffset) * 60 * 1000);
+  return date;
 }

@@ -197,13 +197,13 @@ export default async function IpoDetails({
                     <p className="font-semibold">{event.eventTitle}</p>
                     <p
                       className={
-                        "text-sm text-gray-400 " +
+                        "text-sm " +
                         (event.date && event.date < new Date().toISOString()
-                          ? "text-gray-500"
+                          ? " text-gray-500"
                           : "") +
                         (event.date &&
                         new Date(event.date).getDate() == new Date().getDate()
-                          ? "text-green-500"
+                          ? " text-green-500"
                           : "")
                       }
                     >

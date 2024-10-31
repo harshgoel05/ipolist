@@ -31,7 +31,7 @@ export default function Table({
   const [currentData, setCurrentData] = React.useState<IPODetailed[]>([]);
   const [search, setSearch] = React.useState<string>("");
   const [showArchive, setShowArchive] = useState(false);
-
+  const [showPlanned, setShowPlanned] = useState(false);
   const [filterOptions, setFilterOptions] = useState<{
     status: string[];
   }>({
@@ -44,13 +44,28 @@ export default function Table({
 
   useEffect(() => {
     // Filter data based on search input if it exists, otherwise use full dataset
-
+    console.log("processedData", processedData);
     let filteredData = search
       ? processedData.filter((el) =>
           el.name.toLowerCase().includes(search.toLowerCase())
         )
       : processedData;
 
+    // Remove planned data if showPlanned is false
+    if (!showPlanned) {
+      filteredData = filteredData.filter((el) => el.status !== "Coming Soon");
+    }
+
+    // Remove archived data if showArchive is false (archive -> listing date is more than 1 month old)
+    if (!showArchive) {
+      filteredData = filteredData.filter(
+        (el) =>
+          !el.listingDate ||
+          +new Date(el.listingDate) > +new Date() - 15 * 24 * 60 * 60 * 1000 // 30 days  * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
+      );
+    }
+
+    console.log("filteredData", filteredData);
     // Filter data based on status if it exists
     if (filterOptions.status.length > 0) {
       const filteredStatusData = filteredData.filter((el) =>
@@ -70,12 +85,12 @@ export default function Table({
 
     // Update the current data state with the sliced data
     setCurrentData(newData);
-  }, [page, limit, search, filterOptions]);
+  }, [page, limit, search, filterOptions, showArchive, showPlanned]);
 
   useEffect(() => {
     // Reset page to 1 when search term changes
     setPage(1);
-  }, [search, filterOptions]);
+  }, [search, filterOptions, showArchive, showPlanned]);
 
   return (
     <div className="border border-gray-700 relative shadow-md sm:rounded-lg w-full">
@@ -86,6 +101,8 @@ export default function Table({
         setFilterOptions={setFilterOptions}
         setShowArchive={setShowArchive}
         showArchive={showArchive}
+        showPlanned={showPlanned}
+        setShowPlanned={setShowPlanned}
       />
       <div className="overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-400">
@@ -182,6 +199,8 @@ export default function Table({
                             ? "bg-red-400"
                             : el.status === "Listed"
                             ? "bg-blue-400"
+                            : el.status === "Coming Soon"
+                            ? "bg-gray-400"
                             : "bg-yellow-400")
                         }
                       >

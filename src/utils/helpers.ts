@@ -16,7 +16,7 @@ export const MONTH_NAMES_SHORT = [
 ];
 
 export function formatINR(amount: number | null | undefined): string {
-  if (!amount) {
+  if (typeof amount != "number" && !amount) {
     return "--";
   }
   const rupeeSymbol = "₹";

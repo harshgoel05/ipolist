@@ -57,7 +57,7 @@ export default async function IpoDetails({
       latestGmp:
         el.gmpTimeline?.reduce((prev, current) => {
           return prev.date > current.date ? prev : current;
-        })?.price ?? null,
+        })?.price || null,
     };
   } catch (e) {
     console.error(e);
@@ -113,18 +113,17 @@ export default async function IpoDetails({
         const gmp = selectedIpoData.gmpTimeline?.reduce((prev, current) => {
           return prev.date > current.date ? prev : current;
         })?.price;
-        if (!gmp) return "--";
-        return (
-          formatINR(
-            // Find the element with max date in gmpTimeline
-            gmp
-          ) +
-          (gmp &&
-            selectedIpoData.priceRange.max &&
-            " (" +
-              ((gmp / selectedIpoData.priceRange.max) * 100).toFixed(2) +
-              "%)")
-        );
+
+        // Check if gmp is a valid number and max price is non-zero
+        if (typeof gmp !== "number" || isNaN(gmp)) return "--";
+        const maxPrice = selectedIpoData.priceRange?.max;
+
+        if (typeof maxPrice === "number" && maxPrice > 0) {
+          const percentage = ((gmp / maxPrice) * 100).toFixed(2);
+          return formatINR(gmp) + ` (${percentage}%)`;
+        }
+
+        return formatINR(gmp); // Just return formatted gmp if no valid max price
       })(),
       icon: "💰",
     },

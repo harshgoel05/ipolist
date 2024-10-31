@@ -208,8 +208,14 @@ export default function Table({
                       </div>
                     </td>
                     <td className="px-4 py-3 truncate max-w-36">
-                      ₹{el.priceRange.min ? el.priceRange.min : "--"} - ₹
-                      {el.priceRange.max ? el.priceRange.max : "--"}
+                      {el.priceRange.min || el.priceRange.max ? (
+                        <>
+                          ₹{el.priceRange.min ? el.priceRange.min : "--"} - ₹
+                          {el.priceRange.max ? el.priceRange.max : "--"}
+                        </>
+                      ) : (
+                        "T.B.A"
+                      )}
                     </td>
                     <td className="px-4 py-3 truncate max-w-36">
                       {el.details?.sizePerLot
@@ -227,26 +233,27 @@ export default function Table({
                     </td>
 
                     <td className="px-4 py-3 truncate max-w-36">
-                      {el.latestGmp ? (
+                      {typeof el.latestGmp === "number" &&
+                      !isNaN(el.latestGmp) ? (
                         <span>
                           {"₹" + el.latestGmp}
-                          {el.priceRange.max && (
-                            <span
-                              className={`${
-                                (el.latestGmp / el.priceRange.max) * 100 > 0
-                                  ? "text-green-600"
-                                  : "text-red-600"
-                              }`}
-                            >
-                              {el.priceRange.max &&
-                                " (" +
+                          {typeof el.priceRange?.max === "number" &&
+                            el.priceRange.max > 0 && (
+                              <span
+                                className={`${
+                                  (el.latestGmp / el.priceRange.max) * 100 > 0
+                                    ? "text-green-600"
+                                    : "text-red-600"
+                                }`}
+                              >
+                                {" (" +
                                   (
                                     (el.latestGmp / el.priceRange.max) *
                                     100
                                   ).toFixed(2) +
                                   "%)"}
-                            </span>
-                          )}
+                              </span>
+                            )}
                         </span>
                       ) : (
                         "--"

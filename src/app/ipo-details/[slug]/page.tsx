@@ -137,7 +137,7 @@ export default async function IpoDetails({
           <h1 className="text-gray-400 cursor-pointer">Home</h1>
         </Link>
         <p className="text-gray-500 px-2"> / </p>
-        <Link href={"/" + selectedIpoData.slug}>
+        <Link href={"/ipo-details/" + selectedIpoData.slug}>
           <p className="text-gray-400 cursor-pointer">
             {selectedIpoData.symbol}
           </p>

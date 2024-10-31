@@ -8,6 +8,8 @@ export default function TableTopHeader({
   setSearch,
   setFilterOptions,
   filterOptions,
+  showArchive,
+  setShowArchive,
 }: {
   search: string;
   setSearch: (search: string) => void;
@@ -19,9 +21,10 @@ export default function TableTopHeader({
   filterOptions: {
     status: string[];
   };
+  showArchive: boolean;
+  setShowArchive: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [showDropdown, setShowDropdown] = useState(false);
-
   const dropdownRef = useRef<HTMLDivElement>(null);
   const handleClickOutside = (event: any) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -69,12 +72,27 @@ export default function TableTopHeader({
         </div>
       </div>
       <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+        <div className="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium focus:outline-none rounded-lg border hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-700 bg-gray-800 text-gray-400 border-gray-600 hover:text-white hover:bg-gray-700">
+          <label className="inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              value=""
+              className="sr-only peer"
+              checked={showArchive}
+              onChange={() => setShowArchive(!showArchive)}
+            />
+            <div className="relative w-11 h-6 peer-focus:outline-none peer-focus:ring-4 rounded-full peer bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-blue-400"></div>
+            <span className="ms-3 text-sm font-medium text-gray-300">
+              Show Old IPOs
+            </span>
+          </label>
+        </div>
         <div
           className="relative flex items-center space-x-3 w-full md:w-auto"
           ref={dropdownRef}
         >
           <button
-            className="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium focus:outline-none rounded-lg border hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-700 bg-gray-800 text-gray-400 border-gray-600 hover:text-white hover:bg-gray-700"
+            className="w-full md:w-auto flex items-center justify-center py-[9.5px] px-4 text-sm font-medium focus:outline-none rounded-lg border hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-700 bg-gray-800 text-gray-400 border-gray-600 hover:text-white hover:bg-gray-700"
             type="button"
             onClick={() => setShowDropdown(!showDropdown)}
           >

@@ -30,6 +30,7 @@ export default function Table({
 
   const [currentData, setCurrentData] = React.useState<IPODetailed[]>([]);
   const [search, setSearch] = React.useState<string>("");
+  const [showArchive, setShowArchive] = useState(false);
 
   const [filterOptions, setFilterOptions] = useState<{
     status: string[];
@@ -83,6 +84,8 @@ export default function Table({
         setSearch={setSearch}
         filterOptions={filterOptions}
         setFilterOptions={setFilterOptions}
+        setShowArchive={setShowArchive}
+        showArchive={showArchive}
       />
       <div className="overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-400">
@@ -203,46 +206,33 @@ export default function Table({
                         ? el.details?.issueSize.replace("cr", "Cr")
                         : "--"}
                     </td>
-                    {/* <td className="px-4 py-3 truncate max-w-36 font-semibold">
-                      {el.priceRange.max && el.details.sizePerLot && (
-                        <p
-                          className={
-                            el.priceRange.max > el.details.sizePerLot * 1.5
-                              ? "text-green-500"
-                              : ""
-                          }
-                        >
-                          ₹{el.gmpDetails.latestGmpPrice} (
-                          {Math.round(
-                            ((el.gmpDetails.latestGmpPrice +
-                              el.priceRange.max) *
-                              100) /
-                              el.priceRange.max
-                          )}
-                          %)
-                        </p>
-                      )}
-                    </td> */}
+
                     <td className="px-4 py-3 truncate max-w-36">
-                      {el.latestGmp
-                        ? "₹" +
-                          el.latestGmp +
-                          (el.priceRange.max &&
-                            " (" +
-                              (
-                                (el.latestGmp / el.priceRange.max) *
-                                100
-                              ).toFixed(2) +
-                              "%)")
-                        : "--"}
+                      {el.latestGmp ? (
+                        <span>
+                          {"₹" + el.latestGmp}
+                          {el.priceRange.max && (
+                            <span
+                              className={`${
+                                (el.latestGmp / el.priceRange.max) * 100 > 0
+                                  ? "text-green-600"
+                                  : "text-red-600"
+                              }`}
+                            >
+                              {el.priceRange.max &&
+                                " (" +
+                                  (
+                                    (el.latestGmp / el.priceRange.max) *
+                                    100
+                                  ).toFixed(2) +
+                                  "%)"}
+                            </span>
+                          )}
+                        </span>
+                      ) : (
+                        "--"
+                      )}
                     </td>
-                    {/* <td className="px-4 py-3 truncate max-w-36">
-                      {el.applyRecommendation == null
-                        ? "N/A"
-                        : el.applyRecommendation == true
-                        ? "Yes"
-                        : "No"}
-                    </td> */}
                   </tr>
                 </Link>
               );

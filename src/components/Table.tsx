@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { convertDateTimeToDateFormatter, formatINR } from "@/utils/helpers";
 import { IPODetailed } from "@/utils/types";
@@ -196,12 +197,12 @@ export default function Table({
                           (el.status === "Open"
                             ? "bg-green-400"
                             : el.status === "Closed"
-                            ? "bg-red-400"
-                            : el.status === "Listed"
-                            ? "bg-blue-400"
-                            : el.status === "Coming Soon"
-                            ? "bg-gray-400"
-                            : "bg-yellow-400")
+                              ? "bg-red-400"
+                              : el.status === "Listed"
+                                ? "bg-blue-400"
+                                : el.status === "Coming Soon"
+                                  ? "bg-gray-400"
+                                  : "bg-yellow-400")
                         }
                       >
                         {el.status}

@@ -14,6 +14,24 @@ type Post = {
 };
 
 const BlogsPage = ({ posts }: { posts: Post[] }) => {
+  // JSON-LD structured data
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "All Blog Posts",
+    description:
+      "Browse through our latest articles on The IPO List, offering insights, grey market premiun, and analyis for your upcoming IPOs.",
+    url: "https://theipolist.in/blogs",
+    mainEntity: posts.map((post) => ({
+      "@type": "BlogPosting",
+      headline: post.title,
+      description: post.excerpt,
+      url: `https://theipolist.in/blog/${post.slug}`,
+      datePublished: post.publishedAt,
+      image: post.coverImage,
+    })),
+  };
+
   return (
     <div className="min-h-screen">
       {/* Header Section */}
@@ -80,6 +98,11 @@ const BlogsPage = ({ posts }: { posts: Post[] }) => {
           ))}
         </div>
       </main>
+      {/* JSON-LD Script */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
     </div>
   );
 };
@@ -98,3 +121,28 @@ export default async function Page() {
 
   return <BlogsPage posts={posts} />;
 }
+
+export const metadata = {
+  title: "All Blog Posts | The IPO List",
+  description:
+    "Browse through our latest articles on The IPO List, offering insights, grey market premiun, and analyis for your upcoming IPOs.",
+  openGraph: {
+    title: "All Blog Posts | The IPO List",
+    description:
+      "Browse through our latest articles on The IPO List, offering insights, tips, and stories for your journey.",
+    images: [
+      // {
+      //   url: "/path-to-default-image.jpg", // Add a default OG image if possible
+      //   width: 1200,
+      //   height: 630,
+      //   alt: "The IPO List Blog Cover",
+      // },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "All Blog Posts | The IPO List",
+    description:
+      "Check out our latest blog posts with insights, trends, and guides tailored for your needs.",
+  },
+};

@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { AuthorCard, BlogImage, RelatedPosts } from "./components";
 import { PortableText } from "@portabletext/react";
 import { FaCalendar, FaClock, FaTag } from "react-icons/fa";
+import { Metadata } from "next";
 
 export default async function BlogPost({
   params,
@@ -144,22 +145,23 @@ export default async function BlogPost({
           )}
 
           {post.author && <AuthorCard author={post.author} />}
+
+          {post.tags && post.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-8">
+              {post.tags.map((tag: any) => (
+                <span
+                  key={tag}
+                  className="flex items-center px-3 py-1 bg-[#333333] rounded-full text-sm text-gray-300"
+                >
+                  <FaTag className="w-3 h-3 mr-1" />
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
         </header>
 
         {/* Tags */}
-        {post.tags && post.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-8">
-            {post.tags.map((tag: any) => (
-              <span
-                key={tag}
-                className="flex items-center px-3 py-1 bg-[#333333] rounded-full text-sm text-gray-300"
-              >
-                <FaTag className="w-3 h-3 mr-1" />
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
 
         {/* Content */}
         <div className="prose prose-invert prose-lg max-w-none">
@@ -175,4 +177,42 @@ export default async function BlogPost({
       </article>
     </main>
   );
+}
+
+export async function generateMetadata({ params }: any): Promise<Metadata> {
+  const query = `
+    *[_type == "post" && slug.current == $slug][0] {
+      title,
+      excerpt,
+      "coverImage": coverImage.asset->url,
+      "authorName": author->name,
+      publishedAt
+    }
+  `;
+  const data = await sanityClient.fetch(query, { slug: params.slug });
+
+  return {
+    title: data?.title,
+    description: data?.excerpt,
+    viewport: "width=device-width, initial-scale=1",
+    robots: "index, follow",
+    openGraph: {
+      title: data?.title,
+      description: data?.excerpt,
+      images: [
+        {
+          url: data?.coverImage,
+          width: 1200,
+          height: 630,
+          alt: data?.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: data?.title,
+      description: data?.excerpt,
+      images: [data?.coverImage],
+    },
+  };
 }

@@ -20,6 +20,25 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.blogs h1 {
+  @apply text-4xl font-bold my-6;
+}
+
+.blogs h2 {
+  @apply text-3xl font-semibold my-5;
+}
+
+.blogs h3 {
+  @apply text-2xl font-semibold my-4;
+}
+
+.blogs p {
+  @apply text-base leading-7 my-3;
+}
+
+.blogs li {
+  @apply text-base leading-7 my-3;
+}
 @layer utilities {
   .text-balance {
     text-wrap: balance;

@@ -38,6 +38,7 @@ const post = {
       name: "publishedAt",
       type: "datetime",
       title: "Published At",
+      validation: (Rule: any) => Rule.required(),
     },
     {
       name: "excerpt",
@@ -60,20 +61,87 @@ const post = {
       type: "array",
       title: "Body",
       of: [
-        { type: "block" },
+        {
+          type: "block",
+          // Styles for text blocks
+          styles: [
+            { title: "Normal", value: "normal" },
+            { title: "H1", value: "h1" },
+            { title: "H2", value: "h2" },
+            { title: "H3", value: "h3" },
+            { title: "Quote", value: "blockquote" },
+          ],
+          // Marks for inline formatting
+          marks: {
+            decorators: [
+              { title: "Strong", value: "strong" },
+              { title: "Emphasis", value: "em" },
+            ],
+            annotations: [
+              {
+                name: "link",
+                type: "object",
+                title: "URL",
+                fields: [
+                  {
+                    name: "href",
+                    type: "url",
+                    title: "URL",
+                  },
+                ],
+              },
+            ],
+          },
+        },
         {
           type: "image",
           options: { hotspot: true },
+          fields: [
+            {
+              name: "caption",
+              type: "string",
+              title: "Caption",
+              options: {
+                isHighlighted: true,
+              },
+            },
+            {
+              name: "alt",
+              type: "string",
+              title: "Alternative text",
+              description: "Important for SEO and accessibility.",
+              options: {
+                isHighlighted: true,
+              },
+            },
+          ],
         },
         {
           type: "quote",
+          preview: {
+            select: {
+              title: "text",
+            },
+          },
         },
         {
           type: "embed",
         },
       ],
+      validation: (Rule: any) => Rule.required(),
     },
   ],
+  preview: {
+    select: {
+      title: "title",
+      author: "author.name",
+      media: "coverImage",
+    },
+    prepare(selection: any) {
+      const { author } = selection;
+      return { ...selection, subtitle: author && `by ${author}` };
+    },
+  },
 };
 
 export default post;

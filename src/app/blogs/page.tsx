@@ -48,6 +48,14 @@ const BlogsPage = ({ posts }: { posts: Post[] }) => {
       {/* Blog Grid Section */}
       <main className="max-w-8xl mx-auto px-12 pb-16">
         <div className="flex flex-wrap -mx-4">
+          {
+            /* If no posts are available */
+            posts.length === 0 && (
+              <div className="w-full text-center text-gray-400">
+                No posts available, coming soon.
+              </div>
+            )
+          }
           {posts.map((post) => (
             <div key={post._id} className="w-full md:w-1/2 lg:w-1/3 px-4 mb-8">
               <Link

@@ -17,8 +17,6 @@ export async function generateStaticParams() {
 `;
   const posts = await sanityClient.fetch(query);
 
-  console.log("dwdwd", posts);
-
   return posts.map((ipo: any) => ({
     slug: String(ipo?.slug?.current),
   }));

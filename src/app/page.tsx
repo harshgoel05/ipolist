@@ -1,7 +1,7 @@
 import Table from "@/components/Table";
 import { API_BASE_URL, API_END_POINTS } from "@/utils/constants";
 import { calculateStatusAccordingToDate } from "@/utils/helpers";
-import { IPODetailed, IPOStatus } from "@/utils/types";
+import { IPO, IPODetailed, IPOStatus } from "@/utils/types";
 import { notFound } from "next/navigation";
 
 export const revalidate = 60;
@@ -44,6 +44,21 @@ export default async function Home() {
     console.error(e);
     notFound();
   }
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "All IPOs",
+    description:
+      "Explore all the latest IPOs with key information such as listing dates, price ranges, and grey market premium insights.",
+    url: "https://theipolist.in/ipos",
+    mainEntity: data.map((ipo: IPO) => ({
+      "@type": "BlogPosting",
+      headline: ipo.name,
+      description: `${ipo.name} IPO opens on ${ipo.startDate} and closes on ${ipo.endDate}, with a price range of ₹${ipo.priceRange.min} to ₹${ipo.priceRange.max}.`,
+      url: `https://theipolist.in/ipo-details/${ipo.slug}`,
+    })),
+  };
 
   if (!data) {
     return (
@@ -102,6 +117,11 @@ export default async function Home() {
           <Table processedData={data} />
         </div>
       </div>
+      {/* JSON-LD Script */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
     </div>
   );
 }

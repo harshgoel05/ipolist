@@ -7,6 +7,23 @@ import { PortableText } from "@portabletext/react";
 import { FaCalendar, FaClock, FaTag } from "react-icons/fa";
 import { Metadata } from "next";
 
+export const revalidate = 60;
+
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  const query = `
+  *[_type == "post"]
+`;
+  const posts = await sanityClient.fetch(query);
+
+  console.log("dwdwd", posts);
+
+  return posts.map((ipo: any) => ({
+    slug: String(ipo?.slug?.current),
+  }));
+}
+
 export default async function BlogPost({
   params,
 }: {
@@ -194,7 +211,6 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
   return {
     title: data?.title,
     description: data?.excerpt,
-    viewport: "width=device-width, initial-scale=1",
     robots: "index, follow",
     openGraph: {
       title: data?.title,

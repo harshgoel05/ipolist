@@ -12,7 +12,6 @@ export const metadata: Metadata = {
     "Discover the latest upcoming IPOs in India for 2024. Get real-time updates on IPO listings, Grey Market Premium (GMP), company details, IPO dates, subscription status, and expert analysis.",
   keywords:
     "upcoming IPOs India 2024, IPO list 2024, IPO listings, IPO GMP, latest IPOs, IPO subscription status, Grey Market Premium, IPO analysis, new IPOs, IPO dates",
-  viewport: "width=device-width, initial-scale=1",
   robots: "index, follow",
   alternates: {
     canonical: "https://www.theipolist.in",

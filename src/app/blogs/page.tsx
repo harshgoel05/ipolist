@@ -114,6 +114,9 @@ const BlogsPage = ({ posts }: { posts: Post[] }) => {
     </div>
   );
 };
+
+export const revalidate = 60; // Revalidate every 60 seconds
+
 export default async function Page() {
   const query = `
     *[_type == "post"]{

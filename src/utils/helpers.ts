@@ -107,7 +107,5 @@ export function calculateStatusAccordingToDate(
 export function convertDateTimeToIST(date: Date): Date {
   // Convert to IST (Indian Standard Time)
   const IST_OFFSET = 5 * 60 + 30; // IST is UTC+5:30
-  const localOffset = date.getTimezoneOffset(); // Local timezone offset in minutes
-  date = new Date(date.getTime() + (IST_OFFSET - localOffset) * 60 * 1000);
-  return date;
+  return new Date(date.getTime() + IST_OFFSET * 60 * 1000);
 }
